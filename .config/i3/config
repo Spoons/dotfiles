@@ -1,0 +1,189 @@
+# vim: set ft=i3config
+# Author: Michael Ciociola
+# License: GPLv3
+
+font pango:ubuntu 10
+gaps inner 15
+gaps outer 15
+smart_gaps on
+for_window [class="^.*"] border pixel 2
+
+focus_follows_mouse no
+mouse_warping output
+
+# App Defines
+set $mod Mod4
+set $term --no-startup-id termite
+set $browser firefox
+set $reboot sudo -A reboot
+set $netrefresh --no-startup-id sudo -A systemctl restart NetworkManager
+set $hibernate sudo -A systemctl suspend
+
+# use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+#Symbol Binds
+bindsym $mod+Return exec $term
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+apostrophe split v;; exec $term
+bindsym $mod+slash split h;; exec $term
+bindsym $mod+Shift+b gaps inner current minus 10
+bindsym $mod+Shift+c exec --no-startup-id i3resize down
+bindsym $mod+Shift+d gaps inner current set 15; gaps outer current set 15
+bindsym $mod+Shift+f gaps inner current set 0; gaps outer current set 0
+bindsym $mod+Shift+g exec --no-startup-id i3resize left
+bindsym $mod+Shift+h move left 30
+bindsym $mod+Shift+k exec "i3lock -c 000000"
+bindsym $mod+Shift+l exec --no-startup-id i3resize right
+bindsym $mod+Shift+n move up 30
+bindsym $mod+Shift+p exec pavucontrol
+bindsym $mod+Shift+r exec --no-startup-id i3resize up
+bindsym $mod+Shift+s move right 30
+bindsym $mod+Shift+t move down 30
+bindsym $mod+Shift+v exec $term -e nvim
+bindsym $mod+Shift+w exec --no-startup-id zsh -i -c "m_display_select"
+bindsym $mod+Shift+z gaps outer current minus 5
+bindsym $mod+a focus parent
+bindsym $mod+b gaps inner current plus 10
+bindsym $mod+d exec rofi -show run -font "ubuntu 14"
+bindsym $mod+e layout toggle split; exec notify-send 'layout toggle'
+bindsym $mod+f fullscreen toggle
+bindsym $mod+g split h; exec notify-send 'tile horizontally'
+bindsym $mod+h focus left
+bindsym $mod+i workspace prev_on_output
+bindsym $mod+m exec "wmfocus --chars aoeuhtns"
+bindsym $mod+n focus up
+bindsym $mod+o exec tilix --quake
+bindsym $mod+p exec passmenu
+bindsym $mod+q kill
+bindsym $mod+r exec $term -e ranger
+bindsym $mod+s focus right
+bindsym $mod+t focus down
+bindsym $mod+v split v; exec notify-send 'tile vertically'
+bindsym $mod+w exec firefox
+bindsym $mod+x [urgent=latest] focus
+bindsym $mod+y layout toggle split
+bindsym $mod+z gaps outer current plus 5
+
+bindsym $mod+Shift+e mode "$power_select"
+set $power_select l[o]ck, [s]hutdown, [r]eboot, [q]exit, re[l]oad, [m]onitor, [escape]exit
+mode "$power_select" {
+    bindsym s exec systemctl poweroff
+    bindsym r exec systemctl restart
+    bindsym q exec "i3-msg exit"
+    bindsym l exec "i3-msg reload"
+    bindsym o exec "i3lock -c 000000"
+    bindsym m exec sleep 5; xset dpms force off
+    bindsym Escape mode "default"
+    bindsym Return mode "default"
+}
+
+
+# Focus
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+# move focused window
+bindsym $mod+Shift+Left move left 30
+bindsym $mod+Shift+Down move down 30
+bindsym $mod+Shift+Up move up 30
+bindsym $mod+Shift+Right move right 30
+
+# Function Key Binds
+bindsym $mod+F2     restart
+
+# We use variables to avoid repeating the names in multiple places.
+set $ws1 "1"
+set $ws2 "2"
+set $ws3 "3"
+set $ws4 "4"
+set $ws5 "5"
+set $ws6 "6"
+set $ws7 "7"
+set $ws8 "8"
+set $ws9 "9"
+set $ws10 "10"
+
+# switch to workspace
+bindsym $mod+1 workspace $ws1
+bindsym $mod+2 workspace $ws2
+bindsym $mod+3 workspace $ws3
+bindsym $mod+4 workspace $ws4
+bindsym $mod+5 workspace $ws5
+bindsym $mod+6 workspace $ws6
+bindsym $mod+7 workspace $ws7
+bindsym $mod+8 workspace $ws8
+bindsym $mod+9 workspace $ws9
+bindsym $mod+0 workspace $ws10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace $ws1
+bindsym $mod+Shift+2 move container to workspace $ws2
+bindsym $mod+Shift+3 move container to workspace $ws3
+bindsym $mod+Shift+4 move container to workspace $ws4
+bindsym $mod+Shift+5 move container to workspace $ws5
+bindsym $mod+Shift+6 move container to workspace $ws6
+bindsym $mod+Shift+7 move container to workspace $ws7
+bindsym $mod+Shift+8 move container to workspace $ws8
+bindsym $mod+Shift+9 move container to workspace $ws9
+bindsym $mod+Shift+0 move container to workspace $ws10
+
+# Workspace
+bindsym $mod+minus workspace next_on_output
+bindsym $mod+backslash workspace back_and_forth
+bindsym $mod+Shift+bracketleft move workspace to output left
+bindsym $mod+Shift+bracketright move workspace to output right
+
+# Audio and Brightness
+bindsym XF86MonBrightnessDown exec --no-startup-id sudo xbacklight -dec 10
+bindsym XF86MonBrightnessUp exec --no-startup-id sudo xbacklight -inc 10
+bindsym XF86AudioRaiseVolume exec amixer -q sset Master 5%+ unmute
+bindsym XF86AudioLowerVolume exec amixer -q sset Master 5%- unmute
+bindsym XF86AudioMute exec amixer -q sset Master toggle
+
+# Startup Applications
+exec --no-startup-id clipit
+exec --no-startup-id dockd --daemon
+exec --no-startup-id dunst
+exec --no-startup-id nm-applet
+exec --no-startup-id protonmail-bridge
+exec --no-startup-id redshift -l 35:-80
+exec --no-startup-id udiskie --tray
+exec --no-startup-id workrave
+
+client.focused          #272827 #272827 #99b7c2 #272827 #99b7c2
+client.focused_inactive #272827 #272827 #99b7c2 #272827 #272827
+client.unfocused        #272827 #272827 #99b7c2 #272827 #272827
+client.urgent           #272827 #272827 #99b7c2 #272827 #272827
+client.placeholder      #272827 #272827 #99b7c2 #272827 #272827
+
+client.background #272827
+
+bar {
+    font pango:ubuntu 10
+    colors {
+        background #272827
+        statusline #99b7c2
+        focused_workspace #272827 #99b7c2 #272827
+    }
+	status_command i3blocks
+	position bottom
+	mode dock
+	modifier None
+    tray_output none
+}
+for_window [instance="pavucontrol"] floating enable
+for_window [instance="workrave"] sticky enable floating enable
+
+# >>> Window Rules <<<
+# >>> Avoid tiling for non-Plasma stuff <<<
+for_window [window_role="pop-up"] floating enable
+for_window [window_role="bubble"] floating enable
+for_window [window_role="task_dialog"] floating enable
+for_window [window_role="Preferences"] floating enable
+for_window [window_role="About"] floating enable
+for_window [window_type="dialog"] floating enable
+for_window [window_type="menu"] floating enable
+for_window [window_type="notification"] floating enable

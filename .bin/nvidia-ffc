@@ -1,0 +1,32 @@
+#!/bin/sh
+# Author: Michael Ciociola
+# License: GPLv3
+
+function m_nvidia_enable() {
+	if [[ "$1" ]]
+	then
+		sh -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -t -q CurrentMetaMode |tr -d "\n"|sed 's/ViewPortIn=/ForceFullCompositionPipeline=On, ViewPortIn=/g'|sed 's/.*:://'|sed 's/^ *//;s/ *$//')\"" #
+	else
+		sh -c "nvidia-settings --assign CurrentMetaMode=\"$(nvidia-settings -t -q CurrentMetaMode |tr -d "\n"|sed 's/.*:://'|sed 's/^ *//;s/ *$//'|sed "s/CompositionPipeline=On/CompositionPipeline=Off/g")\"" #
+	fi
+}
+
+if [[ "$#" -eq 0 ]]
+then
+	m_nvidia_enable 1
+	exit 0
+fi
+
+while getopts "edh" opt; do
+  case ${opt} in
+    e ) m_nvidia_enable 1
+      ;;
+    d ) m_nvidia_enable 0
+      ;;
+    h ) echo "Usage: nvidia-ffcp [-e] [-d]"
+        exit 0
+      ;;
+    * ) exit 1
+      ;;
+  esac
+done
