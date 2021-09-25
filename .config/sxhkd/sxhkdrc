@@ -1,8 +1,8 @@
 # Author: Michael Ciociola
 # License: GPLv3
 
-super + alt + {b,e,m,c,f,p,a,i}
-	{firefox, emacs, thunderbird, signal-desktop, kitty ranger, kitty ncmpcpp, pavucontrol, notify-send "$(xprop | grep 'CLASS')"}
+super + alt + {b,e,m,c,f,p,a,i,v}
+	{firefox, emacs, thunderbird, signal-desktop, kitty ranger, kitty ncmpcpp, pavucontrol, notify-send "$(xprop | grep 'CLASS')", kitty -e play}
 
 # Show Help
 super + slash
@@ -144,7 +144,7 @@ super + ctrl + {Left,Right,Up,Down}
 
 # Player Previous
 XF86Audio{Next,Prev,Play}
-	playerctl {next,previous,play-pause}
+	mpc {next,prev,toggle}
 
 XF86Audio{Raise,Lower}Volume
 	pamixer -{i,d} 10 --allow-boost && polybar-msg hook mvol 1
@@ -177,7 +177,7 @@ super + shift + l
 	sleep 0.5; xset dpms force standby
 
 super + shift + x
-	betterlockscreen -l dim -t ''
+	betterlockscreen -l
 
 super + shift + p
 	passmenu
