@@ -3,9 +3,9 @@
 # License: GPLv3
 
 
-bspc monitor DP-4 -d web term chat code music 5
-bspc monitor eDP-1 -d web term chat code music 5
-bspc monitor HDMI-1 -d 6 7 8 9
+bspc monitor DP-4 -d web term chat code music read 7
+bspc monitor eDP-1 -d web term chat code music read 7
+bspc monitor HDMI-1 -d 8 9 10
 
 bspc config border_width            0
 bspc config window_gap              37

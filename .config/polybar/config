@@ -30,9 +30,10 @@ padding-right = 0
 module-margin-left = 0
 module-margin-right = 0
 
-font-0 = Noto Sans:pixelsize=12;2
-font-1 = FontAwesome:size=11;2
-font-2 = siji:pixelsize=11;0
+font-0 = "Noto Sans:pixelsize=12;2"
+font-1 = "FontAwesome:size=11;2"
+font-2 = "siji:pixelsize=11;0"
+
 
 modules-left = i3 bspwm xwindow
 modules-center =
@@ -64,6 +65,8 @@ ws-icon-1 = term;
 ws-icon-2 = chat;
 ws-icon-3 = code;
 ws-icon-4 = music;
+ws-icon-5 = read;
+
 ws-icon-default = 
 
 format = <label-state> <label-mode>
