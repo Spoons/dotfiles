@@ -16,6 +16,8 @@ setopt HIST_FIND_NO_DUPS
 setopt HIST_IGNORE_ALL_DUPS
 setopt PUSHD_IGNORE_DUPS    # Do not store duplicates in the stack.
 setopt PUSHD_SILENT         # Do not print the directory stack after pushd or popd.
+unsetopt CASE_GLOB
+setopt GLOB_COMPLETE
 
 export HISTFILE="$ZDOTDIR/.zsh_history"
 export HISTSIZE=922337203685477580
@@ -76,17 +78,6 @@ export FZF_DEFAULT_COMMAND='fd --type=f -H -E .git -E .cache'
 export FZF_DEFAULT_OPTS='--no-height --no-reverse'
 export FZF_TMUX=0
 
-#### cd
-alias -- -='cd -'
-alias -- -1='cd -1'
-alias -- -2='cd -2'
-alias -- -3='cd -3'
-alias -- -4='cd -4'
-alias -- -5='cd -5'
-alias -- -6='cd -6'
-alias -- -7='cd -7'
-alias -- -8='cd -8'
-alias -- -9='cd -9'
 
 # ls after cd
 cd() {
@@ -127,11 +118,13 @@ function delink {
 # Emacs
 if (( $+commands[emacs] )); then
     alias e='emacs -nw'
-    alias ew='emacs'
+    alias eg='emacs'
+    alias ed='emacs --with-profile doom -nw'
+    alias edg='emacs --with-profile doom'
     alias ue='USER_EMACS_DIRECTORY=$PWD e'
     alias uew='USER_EMACS_DIRECTORY=$PWD ew'
 
-    if [[ "$TERM" == "xterm-kitty" ]]; then
+    if [[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "tmux-256color" ]]; then
         alias emacs="TERM=kitty-direct emacs"
     fi
 fi
@@ -158,6 +151,7 @@ function mcd {
 }
 
 # Ls
+alias ls="ls --color"
 alias l="ls -AlhF"
 alias lr="l -tr"
 
@@ -193,7 +187,6 @@ alias scusa="systemctl --user start"
 alias scuso="systemctl --user stop"
 
 # Misc
-alias mru="mr status ; m_pause ; mr add -u ; mr commit; mr update ; mr push"
 alias redshift="redshift -l 35:-80 -t 5700:3600 -m randr"
 alias smi="sudo make install"
 alias tb="nc termbin.com 9999"
@@ -214,9 +207,8 @@ alias yl="yadm log"
 # ZFS
 alias zpe='sudo zpool export zroot'
 alias zpi='sudo zpool import -f zroot'
-alias zl='zfs list | grep --invert-match --regexp="\(docker\|autosnap\|syncoid\)"'
 alias zla='zfs list -t all'
-alias zls='zfs list -t all | grep --invert-match --regexp="\(docker\)"'
+alias zl='zfs list -o name,available,used,usedbychildren,usedbysnapshots,usedbydataset -H | grep -v docker | column -t -N name,available,used,children,snapshots,dataset'
 alias zp='zpool status'
 alias zk='sudo zfs load-key -a'
 alias zm='sudo zfs mount -a'
@@ -492,7 +484,7 @@ function pacdisowned() {
 
   pacman -Qlq | sort -u > "$db"
 
-  find /bin /etc /lib /sbin /usr ! -name lost+found \
+  sudo find /bin /etc /lib /sbin /usr ! -name lost+found \
     \( -type d -printf '%p/\n' -o -print \) | sort > "$fs"
 
   comm -23 "$fs" "$db"
@@ -570,6 +562,15 @@ if [[ -r $GNUPGCONFIG ]] && command grep -q enable-ssh-support "$GNUPGCONFIG"; t
   export SSH_AUTH_SOCK="$AGENT_SOCK.ssh"
   unset SSH_AGENT_PID
 fi
+
+# Start ssh-agent
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+fi
+
 
 # Powerlevel10k
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
