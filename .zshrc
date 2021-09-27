@@ -119,13 +119,16 @@ function delink {
 if (( $+commands[emacs] )); then
     alias e='emacs -nw'
     alias eg='emacs'
-    alias ed='emacs --with-profile doom -nw'
-    alias edg='emacs --with-profile doom'
+    alias ec='emacs --with-profile doom -nw'
+    alias ecg='emacs --with-profile doom'
     alias ue='USER_EMACS_DIRECTORY=$PWD e'
     alias uew='USER_EMACS_DIRECTORY=$PWD ew'
 
     if [[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "tmux-256color" ]]; then
         alias emacs="TERM=kitty-direct emacs"
+    fi
+    if [[ -d "$HOME/.emacs.doom/bin" ]]; then
+        PATH="$PATH:$HOME/.emacs.doom/bin"
     fi
 fi
 
@@ -548,28 +551,6 @@ src() {
 	fi
 }
 
-
-AGENT_SOCK=$(gpgconf --list-dirs | grep agent-socket | cut -d : -f 2)
-
-if [[ ! -S $AGENT_SOCK ]]; then
-  gpg-agent --daemon --use-standard-socket &>/dev/null
-fi
-export GPG_TTY=$TTY
-
-# Set SSH to use gpg-agent if it's enabled
-GNUPGCONFIG="${GNUPGHOME:-"$HOME/.gnupg"}/gpg-agent.conf"
-if [[ -r $GNUPGCONFIG ]] && command grep -q enable-ssh-support "$GNUPGCONFIG"; then
-  export SSH_AUTH_SOCK="$AGENT_SOCK.ssh"
-  unset SSH_AGENT_PID
-fi
-
-# Start ssh-agent
-if ! pgrep -u "$USER" ssh-agent > /dev/null; then
-    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
-fi
-if [[ ! "$SSH_AUTH_SOCK" ]]; then
-    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
-fi
 
 
 # Powerlevel10k
