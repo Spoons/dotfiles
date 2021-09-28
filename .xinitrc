@@ -6,7 +6,7 @@ usermodmap=$HOME/.Xmodmap
 sysresources=/etc/X11/xinit/.Xresources
 sysmodmap=/etc/X11/xinit/.Xmodmap
 
-# merge in defaults and keymaps
+# system xresource merge
 if [ -f $sysresources ]; then
     xrdb -merge $sysresources
 fi
@@ -15,6 +15,7 @@ if [ -f $sysmodmap ]; then
     xmodmap $sysmodmap
 fi
 
+# user xresources
 if [ -f "$userresources" ]; then
     xrdb -merge "$userresources"
 fi
@@ -23,7 +24,7 @@ if [ -f "$usermodmap" ]; then
     xmodmap "$usermodmap"
 fi
 
-# system packages
+# system xinit scripts
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
     for f in /etc/X11/xinit/xinitrc.d/?*.sh; do
         [ -x "$f" ] && . "$f"
@@ -34,7 +35,7 @@ fi
 # Settings based on hostname
 case "$HOSTNAME" in
     iroh)
-        ~/.screenlayout/dual.sh
+        #~/.screenlayout/dual.sh
         WALLPAPER="$HOME/library/images/wallpapers/the_neon_shallows_by_kawitt_ddm6tx0.png"
         POLYBAR_PANEL="top-1440"
         nvidia-ffc -e
@@ -68,23 +69,24 @@ function _start {
     eval "$1" &
 }
 
+# Enable Firefox X flags, fix JAVA in tilers, and WINEFSYNC
 export MOZ_USE_XINPUT2=1 MOZ_X11_EGL=1 MOZ_WEBRENDER=1 \
     _JAVA_AWT_WM_NONREPARENTING=1 WINEFSYNC=1
 
 setxkbmap dvorak
 feh --bg-scale "$WALLPAPER"
-xrdb -merge ~/.Xresources.$HOSTNAME
+[ -f "$HOME/.Xresources.$HOSTNAME" ] &&
+    xrdb -merge ~/.Xresources.$HOSTNAME
 xsetroot -cursor_name left_ptr &
 
 # Autostart
-pkill -9 jellyfin-mpv-sh\ \<defunct\> &>/dev/null
-/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets &
-_start "picom --config ${PICOM_CONFIG:=~/.config/picom/picom.conf}"
-_start "sleep 10 && jellyfin-mpv-shim"
-# _start "redshift -l 35:-80 -t 5700:3600 -m randr"
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
+_start "picom --experimental-backends --backend glx --xrender-sync-fence --config ${PICOM_CONFIG:=~/.config/picom/picom.conf}"
+_start "redshift -l 35:-80 -t 5700:3600 -m randr"
 _start "sleep 2 && polybar -c ~/.config/polybar/config ${POLYBAR_PANEL:=top}"
 _start "sxhkd -m -1"
 _start "xidlehook --not-when-fullscreen --not-when-audio --timer 180 'betterlockscreen -l dim -t' ''"
+_start "ds4drv --hidraw --udp"
 
 
 session=${1:-bspwm}

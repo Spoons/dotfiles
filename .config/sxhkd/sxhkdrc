@@ -1,6 +1,7 @@
 # Author: Michael Ciociola
 # License: GPLv3
 
+# applications: firefox, emacs, thunderbird, signal, ranger, ncmpcpp, pavucontrol, window class, play
 super + alt + {b,e,m,c,f,p,a,i,v}
 	{firefox, emacs, thunderbird, signal-desktop, kitty ranger, kitty ncmpcpp, pavucontrol, notify-send "$(xprop | grep 'CLASS')", kitty -e play}
 
@@ -45,6 +46,7 @@ super + y
 # super + i
 # 	bspc node -s biggest.window
 
+# swap window with biggest local
 super + i
     bspc node -s biggest.local
 
@@ -142,13 +144,15 @@ super + {equal,minus}
 super + ctrl + {Left,Right,Up,Down}
     bspc node @focused:/ --rotate {270,90,180,180}
 
-# Player Previous
+# audio next prev play
 XF86Audio{Next,Prev,Play}
 	mpc {next,prev,toggle}
 
+# raise lower volume
 XF86Audio{Raise,Lower}Volume
 	pamixer -{i,d} 10 --allow-boost && polybar-msg hook mvol 1
 
+# mute volume
 XF86AudioMute
 	pamixer --toggle-mute && polybar-msg hook mvol 1
 
@@ -161,14 +165,17 @@ Print
 	xfce4-screenshooter -d 3 -f -s ~/personal/image/screenshots; \
 	notify-send "Screenshot saved"
 
+# screenshot clipboard
 ctrl + Print
 	xfce4-screenshooter -d 3 -f -c; \
 	notify-send "Screenshot copied to clipboard"
 
+# screenshot save default location
 shift + Print
 	xfce4-screenshooter -d 3 -r -s ~/personal/image/screenshots; \
 	notify-send "Screenshot saved"
 
+# screenshot partial clipboard
 ctrl + shift + Print
 	xfce4-screenshooter -d 3 -r -c; \
 	notify-send "Screenshot copied to clipboard"
