@@ -62,6 +62,9 @@ export GNUPGHOME="$XDG_DATA_HOME"/gnupg
 export XCURSOR_SIZE="32"
 export QT_QPA_PLATFORMTHEME=gtk3
 
+# Games
+export RMM_PATH="~/apps/rimworld"
+
 # FD
 if (( $+commands[fdfind] )); then
     alias fd='fdfind'
@@ -114,6 +117,7 @@ function delink {
     done
 }
 
+alias tdl="tidal-dl -l"
 
 # Emacs
 if (( $+commands[emacs] )); then
