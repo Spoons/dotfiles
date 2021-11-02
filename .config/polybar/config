@@ -2,23 +2,20 @@
 ; License: GPLv3
 
 [bar/top-4k]
-inherit = bar/top
+inherit = bar/default
 height = 80
 
-[bar/top-1440]
-inherit = bar/top
-height = 35
-
-[bar/top]
+[bar/default]
 enable-ipc = true
 dpi = ${xrdb:Xft.dpi:-1}
 width = 100%
 height = 35
 offset-x = 0
 offset-y = -1
+monitor = DP-4
 ;bottom = true
 
-background = #5a000000
+background = #c0000000
 foreground = #eee
 
 underline-size = 2
@@ -60,12 +57,22 @@ scroll-down = bspwm-deskprev
 [module/bspwm]
 type = internal/bspwm
 
-ws-icon-0 = web;
-ws-icon-1 = term;
-ws-icon-2 = chat;
-ws-icon-3 = code;
-ws-icon-4 = music;
-ws-icon-5 = read;
+; ws-icon-0 = web;
+; ws-icon-1 = term;
+; ws-icon-2 = chat;
+; ws-icon-3 = code;
+; ws-icon-4 = music;
+; ws-icon-5 = read;
+ws-icon-0 = 1;web
+ws-icon-1 = 2;emacs
+ws-icon-2 = 3;term
+ws-icon-3 = 4;chat
+ws-icon-4 = 5;music
+ws-icon-5 = 6;reading
+ws-icon-6 = 7;video
+ws-icon-7 = 8;games
+ws-icon-8 = 9;misc
+
 
 ws-icon-default = 
 
@@ -114,7 +121,7 @@ time-alt = %H:%M:%S
 label = %date% %time%
 format =    <label>
 ;format-background = #ddffffff
-format-background = #88000000
+# format-background = #88000000
 ;format-foreground = #333
 format-padding = 3
 

@@ -39,6 +39,7 @@ endif
 
 if has('termguicolors')
     set termguicolors
+    let g:terminal_color_background="#1e1f28"
 endif
 
 " Plugin Collection

@@ -3,7 +3,18 @@
 
 # applications: firefox, emacs, thunderbird, signal, ranger, ncmpcpp, pavucontrol, window class, play
 super + alt + {b,e,m,c,f,p,a,i,v}
-	{firefox, emacs, thunderbird, signal-desktop, kitty ranger, kitty ncmpcpp, pavucontrol, notify-send "$(xprop | grep 'CLASS')", kitty -e play}
+	{ \
+	firefox, \
+	kitty --class emacs --name emacs zsh -ci "emacs -nw", \
+	thunderbird, \
+	signal-desktop, \
+	kitty ranger, \
+	kitty --class ncmpcpp --name ncmpcpp ncmpcpp, \
+	pavucontrol, \
+	notify-send "$(xprop | grep 'CLASS')", \
+	kitty --class play --name play play \
+	}
+
 
 # Show Help
 super + slash
@@ -180,11 +191,9 @@ ctrl + shift + Print
 	xfce4-screenshooter -d 3 -r -c; \
 	notify-send "Screenshot copied to clipboard"
 
-super + shift + l
-	sleep 0.5; xset dpms force standby
 
 super + shift + x
-	betterlockscreen -l
+	~/.bin/lockscreen.sh
 
 super + shift + p
 	passmenu

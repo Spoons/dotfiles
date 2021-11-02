@@ -19,6 +19,9 @@ setopt PUSHD_SILENT         # Do not print the directory stack after pushd or po
 unsetopt CASE_GLOB
 setopt GLOB_COMPLETE
 
+export ZSH_CACHE_DIR="$HOME/.cache/zsh"
+[[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir -p "$ZSH_CACHE_DIR"
+
 export HISTFILE="$ZDOTDIR/.zsh_history"
 export HISTSIZE=922337203685477580
 export SAVEHIST="$HISTSIZE"
@@ -215,7 +218,7 @@ alias yl="yadm log"
 alias zpe='sudo zpool export zroot'
 alias zpi='sudo zpool import -f zroot'
 alias zla='zfs list -t all'
-alias zl='zfs list -o name,available,used,usedbychildren,usedbysnapshots,usedbydataset -H | grep -v docker | column -t -N name,available,used,children,snapshots,dataset'
+alias zl='zfs list -o name,available,used,usedbychildren,usedbysnapshots,usedbydataset -H | grep -v "zroot/var/lib/docker/" | column -t -N name,available,used,children,snapshots,dataset'
 alias zp='zpool status'
 alias zk='sudo zfs load-key -a'
 alias zm='sudo zfs mount -a'
@@ -571,3 +574,5 @@ if [ `tput colors` != "256" ]; then
 else
     [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
