@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# virsh start Windows_10_VM # Optional line, this will simply start the VM if it isn't running. You can delete this if you wish. Make sure to change the name to your VM name.
+pgrep -x "$(basename $0)" > /dev/null || pkill "$basename $0"
+pgrep -x "scream" > /dev/null || pkill scream
+
+virsh start win10-vfio
+looking-glass-client -a -n & # Starts Looking Glass, and ignores all output (We aren't watching anyways)
+LGC_PID=$!
+scream -o pulse -i virbr0 -v
+SCR_PID=$!
+
+# cleanup() {
+#     kill $LGC_PID
+#     kill $SCR_PID
+# }
+
+# trap cleanup EXIT SIGINT

@@ -1,0 +1,69 @@
+#!/bin/sh
+# Written by Michael Ciociola
+# License: GPLv3
+# 2021-04-06
+
+_sudo_loop() {
+  # Prevent sudo timeout
+  sudo -v # ask for sudo password up-front
+  while true; do
+    # Update user's timestamp without running a command
+    sudo -nv; sleep 1m
+    # Exit when the parent process is not running any more. In fact this loop
+    # would be killed anyway after being an orphan(when the parent process
+    # exits). But this ensures that and probably exit sooner.
+    kill -0 $$ 2>/dev/null || exit
+  done &
+}
+
+_update() {
+  git clean -fd .
+
+  if [[ "$1" == "true" ]]; then
+    git pull --ff
+  else
+    git reset --hard origin/master
+    git pull --ff --ff-only
+  fi
+}
+
+_build() {
+  makepkg -si --noconfirm --needed
+}
+
+_main() {
+  _sudo_loop
+  repopaths=(
+    "$HOME/local/software/linux-tkg"
+    "$HOME/local/software/wine-tkg-git/wine-tkg-git"
+    "$HOME/local/software/nvidia-all"
+    "$HOME/local/software/grub-hook"
+  )
+  stdinput=(
+    ""
+    ""
+    ""
+    ""
+  )
+  gitmerge=(
+    ""
+    ""
+    ""
+    "true"
+  )
+
+  # update world
+  sudo pacman --noconfirm -Syu
+
+  owd="$(pwd)"
+  for i in "${!repopaths[@]}"; do
+    if cd "${repopaths[i]}"; then
+      _update "${gitmerge[i]}"
+      _build "${stdinput[i]}"
+      read -r -d '' -t 0.1 -n 10000
+    fi
+  done
+  cd "$owd" || exit
+}
+
+_main
