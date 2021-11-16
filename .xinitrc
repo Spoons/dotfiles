@@ -33,8 +33,11 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
     unset f
 fi
 
-# this export is neccesary for rest of dotfiles to function
-export HOSTNAME="$(cat /proc/sys/kernel/hostname)"
+# Assign hostname if not defined.
+# Hostname variable is required by rest of dotfiles.
+if [ -z "$HOSTNAME" ]; then
+    export HOSTNAME="$(cat /proc/sys/kernel/hostname)"
+fi
 
 if [ -f "$HOME/.Xresources.$HOSTNAME" ]; then
     xrdb -merge ~/.Xresources.$HOSTNAME
@@ -99,6 +102,7 @@ sxhkd -m -1 & #keyboard daemon
 xidlehook --not-when-fullscreen --not-when-audio --timer 300 'lockscreen.sh' '' &
 
 
+# launch bspwm by default if no argument is specified
 session=${1:-bspwm}
 case $session in
     bspwm) exec bspwm ;;

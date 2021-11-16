@@ -36,12 +36,14 @@ _main() {
   repopaths=(
     "$HOME/local/software/linux-tkg"
     "$HOME/local/software/wine-tkg-git/wine-tkg-git"
+    "$HOME/local/software/wine-tkg-git/proton-tkg-git"
     "$HOME/local/software/nvidia-all"
     "$HOME/local/software/grub-hook"
   )
   stdinput=(
-    ""
-    ""
+    "\n"
+    "\n"
+    "\n"
     ""
     ""
   )
