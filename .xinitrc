@@ -33,24 +33,12 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
     unset f
 fi
 
+# this export is neccesary for rest of dotfiles to function
 export HOSTNAME="$(cat /proc/sys/kernel/hostname)"
-# Settings based on hostname
-case "$HOSTNAME" in
-    iroh)
-        # ~/.screenlayout/dual.sh
-        ~/.screenlayout/single.sh
-        WALLPAPER="$HOME/library/images/wallpapers/anime/1628445757130.jpg"
-        PICOM_CONFIG="$HOME/.config/picom/picom.conf"
-        nvidia-ffc -e
-        ;;
-    hatsune)
-        WALLPAPER="$HOME/local/wallpaper/wallhaven-ymz61d.jpg"
-        POLYBAR_PANEL="top-4k"
-        PICOM_CONFIG="/etc/xdg/picom.conf"
-        xfce4-power-manager &
-        ;;
-esac
 
+if [ -f "$HOME/.Xresources.$HOSTNAME" ]; then
+    xrdb -merge ~/.Xresources.$HOSTNAME
+fi
 
 # X1 Carbon 7th Touchpad
 if xinput | grep -q SYNA8004; then
@@ -64,53 +52,55 @@ if xinput | grep -q SYNA8004; then
         'libinput Accel Speed' 1
 fi
 
-_start () {
-    echo "$1"
-    # pgrep -x "$1" > /dev/null || pkill "$1"
-    # if [ ! $? -eq 1  ] and [ ! $? -eq 2 ]; then
-    #     echo "Failed to kill $1\n"
-    # fi
-    eval "$1" &
+set_wallpaper() {
+    feh --bg-center "$1" &
 }
+
+launch_polybar() {
+    _PANEL_NAME="${1-top}" #launch with default name if not set
+    polybar -c ~/.config/polybar/config "$_PANEL_NAME" &
+}
+
+# Settings based on hostname
+case "$HOSTNAME" in
+    iroh)
+        ~/.screenlayout/single.sh
+        set_wallpaper "$HOME/library/images/wallpapers/anime/1628445757130.jpg"
+        nvffc -e
+        ;;
+    hatsune)
+        POLYBAR_PANEL_NAME="top-4k"
+        set_wallpaper "$HOME/local/wallpaper/wallhaven-ymz61d.jpg"
+        xfce4-power-manager &
+        ;;
+esac
+
 
 # Enable Firefox X flags, fix JAVA in tilers, and WINEFSYNC
 export MOZ_USE_XINPUT2=1 MOZ_X11_EGL=1 MOZ_WEBRENDER=1 \
     _JAVA_AWT_WM_NONREPARENTING=1 WINEFSYNC=1
 
-setxkbmap dvorak
-feh --bg-scale "$WALLPAPER"
-[ -f "$HOME/.Xresources.$HOSTNAME" ] &&
-    xrdb -merge ~/.Xresources.$HOSTNAME
 
+# Set keyboard layout to dvorak
+setxkbmap dvorak
+
+# Set blank time for monitor
 xset s 180 180
 xset dpms 180 180 180
 
 # Autostart
-eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets)
-_start "polybar -c ~/.config/polybar/config ${POLYBAR_PANEL:=default}"
-_start "picom --experimental-backends --backend glx --xrender-sync-fence --config ${PICOM_CONFIG:=/etc/xdg/picom.conf}"
-_start "redshift -l 35:-80 -t 5700:3600 -m randr"
-_start "sxhkd -m -1"
-_start "xidlehook --not-when-fullscreen --not-when-audio --timer 300 'lockscreen.sh' ''"
-# _start "ds4drv --hidraw --udp"
-
-
-# # Start polybar once per monitor
-# while IFS= read -r m
-# do
-#     _start "sleep 2 && env _MONITOR="$m" polybar -c ~/.config/polybar/config ${POLYBAR_PANEL:=top}"
-# done <<< "$(xrandr --query | grep -E '\sconnected' | awk '{print $1;}')"
+ds4drv --hidraw --udp & #ps4 controller driver
+dunst & # notifications
+eval $(/usr/bin/gnome-keyring-daemon --start --components=pkcs11,secrets) #gnome secrets
+launch_polybar "$POLYBAR_PANEL_NAME"
+picom --experimental-backends --backend glx --xrender-sync-fence &
+redshift -l 35:-80 -t 5700:3600 -m randr &
+sxhkd -m -1 & #keyboard daemon
+xidlehook --not-when-fullscreen --not-when-audio --timer 300 'lockscreen.sh' '' &
 
 
 session=${1:-bspwm}
 case $session in
-    bspwm)
-        dunst &
-        kitty &
-        exec bspwm
-        ;;
-    xfce | xfce4)
-        exec startxfce4
-        ;;
-    *) exec $1 ;;
+    bspwm) exec bspwm ;;
+    xfce | xfce4) exec startxfce4 ;;
 esac

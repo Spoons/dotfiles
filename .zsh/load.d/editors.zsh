@@ -2,8 +2,8 @@
 
 # Emacs
 if (( $+commands[emacs] )); then
-    alias e='emacs -nw'
-    alias eg='emacs'
+    alias en='emacs -nw'
+    alias eng='emacs'
     alias ue='USER_EMACS_DIRECTORY=$PWD e'
     alias uew='USER_EMACS_DIRECTORY=$PWD ew'
 
@@ -17,12 +17,12 @@ fi
 
 
 if (( $+commands[emacsclient] )); then
-    alias ec='emacsclient --alternate-editor= -nw'
-    alias ecw='emacsclient --alternate-editor='
+    alias e='emacsclient --alternate-editor= -nw'
+    alias eg='emacsclient --alternate-editor='
     if [[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "tmux-256color" ]]; then
         alias emacsclient="TERM=kitty-direct emacsclient"
     fi
-    export EDITOR='emacsclient --alternate-editor= -nw'
+    export EDITOR='emacsclient -nw'
 fi
 
 
@@ -35,6 +35,3 @@ elif (( $+commands[vi] )); then
     alias v='vi'
 fi
 
-compile_mod() {
-    FrameworkPathOverride=$(dirname $(which mono))/../lib/mono/4.7.2-api/ dotnet build "$1" /property:Configuration=Release
-}

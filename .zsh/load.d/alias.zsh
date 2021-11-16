@@ -1,6 +1,8 @@
 #!/usr/bin/env zsh
 # File for unsorted aliases and functions
 
+zstyle ':completion:*' completer _expand_alias _complete _ignored
+
 if (( $+commands[fdfind] )); then
     alias fd='fdfind'
 fi
@@ -13,8 +15,7 @@ fi
 
 # Misc
 alias redshift="redshift -l 35:-80 -t 5700:3600 -m randr"
-alias smi="sudo make install"
-alias ytb="youtube-dl -f best"
+alias ytb="youtube-dl-fast -f best"
 
 #### Tmux
 if (( $+commands[tmux] )); then
@@ -33,17 +34,40 @@ case $HOST in
         alias mpv="mpv --vo=gpu --profile=gpu-hq --cscale=ewa_lanczossharp --scale=ewa_lanczossharp --video-sync=display-resample --interpolation --tscale=catmull_rom";;
 esac
 
-edit_common_config_file() {
-    eval $EDITOR "$(find $HOME/.zsh/load.d -type f | fzf)"
+search_common_files() {
+    (
+        cd ~
+        fd -H -t f -d 1 "^\..*" . &&
+        fd -d 1 -t f . .zsh/load.d .bin .config .emacs.d .pbin .vnc .xmonad &&
+        echo ".ssh/config"
+        echo ".local/share/gnupg/gpg.conf"
+        echo ".local/share/gnupg/dirmngr.conf"
+    )
+
 }
 
+edit_common_config_file() {
+    # eval $EDITOR "$(fd -t f ~/.zsh/load.d ~/.bin ~/.zshrc ~/.config | fzf --delimeter / --with-nth -1)"
+    eval $EDITOR "$((search_common_files) | fzf)"
+}
+
+edit_zsh_config_file() {
+    # eval $EDITOR "$(fd -t f ~/.zsh/load.d ~/.bin ~/.zshrc ~/.config | fzf --delimeter / --with-nth -1)"
+    eval $EDITOR "$(( cd ~ ; echo .zshrc && fd -t f . .zsh/load.d .bin  ) | fzf)"
+}
+
+open_with_emacs() {
+    emacsclient -nw $@
+}
+
+alias ecc=edit_common_config_file
 alias ecz="$EDITOR $HOME/.zshrc"
-alias ecp="edit_common_config_file"
+# alias ecp="edit_common_config_file"
 alias ecb="$EDITOR $XDG_CONFIG_HOME/bspwm/bspwmrc"
 alias ecs="$EDITOR $XDG_CONFIG_HOME/sxhkd/sxhkdrc"
 alias ecpb="$EDITOR $XDG_CONFIG_HOME/polybar/config"
 alias ecx="$EDITOR $HOME/.xinitrc"
-alias reload="exec zsh -l"
+alias rl="exec zsh -l"
 
 alias lxo="less $HOME/.cache/Xoutput"
 
@@ -60,7 +84,6 @@ alias TB="| nc termbin.com 9999"
 alias X="| xargs "
 
 alias -s {ape,avi,flv,m4a,mkv,mov,mp3,mp4,mpeg,mpg,ogg,ogm,wav,webm}=mpv
-alias -s {py,c,cpp,sh,zsh,bash}="emacs -nw"
 alias -s {jpg,jpeg,webp,png,tiff,raw,bmp,gif,svg}="fzf -."
 alias -s pdf="evince"
 alias -s {doc,docx,odf,odg,ods,dt,ott,pub}=libreoffice
@@ -75,3 +98,16 @@ globalias() {
 }
 zle -N globalias
 bindkey " " globalias # space key to expand globalalias
+
+hash -d rmm=~/dev/rmm
+hash -d rw=~/apps/rimworld
+hash -d mods=~/apps/rimworld/game/Mods
+hash -d doc=~/personal/document
+hash -d media=~/media
+hash -d torrent=~/media/torrents
+hash -d download=~/local/download
+hash -d desktop=~/local/desktop
+hash -d wallpaper=~/library/images/wallpapers
+hash -d screenshots=~/personal/image/screenshots
+hash -d pkg=/mnt/850/makepkg/pkgdest
+hash -d src=/mnt/850/makepkg/srcdest

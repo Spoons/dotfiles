@@ -26,7 +26,7 @@ super + Return
 
 # program launcher
 super + @space
-	rofi -combi-modi run,window,drun -show combi -modi combi -dpi 1
+	rofi -combi-modi window,drun,run -show combi -modi combi -dpi 1
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -55,15 +55,15 @@ super + y
 
 # # swap the current node and the biggest window
 # super + i
-# 	bspc node -s biggest.window
+	# 	bspc node -s biggest.window
 
 # swap window with biggest local
 super + i
-    bspc node -s biggest.local
+	bspc node -s biggest.local
 
-#
-# state/flags
-#
+	#
+	# state/flags
+	#
 
 # set the window state: tiled, ps, float, full
 super + {a, shift + a, z, v}
@@ -71,11 +71,7 @@ super + {a, shift + a, z, v}
 
 # set the node flags: mark, lock, stick, private
 super + ctrl + {m,x,y,z}
-    bspc node -g {marked,locked,sticky,private}
-
-#
-# focus/swap
-#
+	bspc node -g {marked,locked,sticky,private}
 
 # focus the node in the given direction
 super + {_,shift + }{h,t,n,s}
@@ -83,7 +79,7 @@ super + {_,shift + }{h,t,n,s}
 
 # focus the node for the given path jump
 # super + {p,b,comma,period}
-# 	bspc node -f @{parent,brother,first,second}
+	# bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous window in the current desktop
 super + {_,shift + }c
@@ -93,27 +89,27 @@ super + {_,shift + }c
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
 
-# focus the last node/desktop
-super + {grave,Tab}
-	bspc {node,desktop} -f last
+#focus the last node/desktop
+#super + {grave,Tab}
+#bspc {node,desktop} -f last
+
+super + d
+	bspc node -f next.local
 
 # focus the older or newer node in the focus history
 super + {o,i}
-	bspc wm -h off; \
-	bspc node {older,newer} -f; \
-	bspc wm -h on
+bspc wm -h off; \
+bspc node {older,newer} -f; \
+bspc wm -h on
 
 # focus or send to the given desktop
 super + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} '^{1-9,10}'
+bspc {desktop -f,node -d} '^{1-9,10}'
 
 # focus the next/previous node in the same window
 super + {comma,period}
-    bspc node -f {next,prev}.local
+	bspc node -f {next,prev}.local
 
-#
-# preselect
-#
 
 # preselect the direction
 super + ctrl + {h,t,n,s}
@@ -130,10 +126,6 @@ super + ctrl + space
 # cancel the preselection for the focused desktop
 super + ctrl + shift + space
 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
-
-#
-# move/resize
-#
 
 # expand a window by moving one of its side outward
 super + alt + {h,t,n,s}
@@ -153,7 +145,7 @@ super + {equal,minus}
 
 # rotate tree
 super + ctrl + {Left,Right,Up,Down}
-    bspc node @focused:/ --rotate {270,90,180,180}
+	bspc node @focused:/ --rotate {270,90,180,180}
 
 # audio next prev play
 XF86Audio{Next,Prev,Play}
@@ -193,10 +185,14 @@ ctrl + shift + Print
 
 
 super + shift + x
-	~/.bin/lockscreen.sh
+	~/.pbin/lockscreen.sh
 
 super + shift + p
 	passmenu
 
 super + j
 	bspc node -n 'last.!automatic.local'
+
+super + grave
+	id=$(cat /tmp/scratchid);\
+	bspc node $id --flag hidden;bspc node -f $id

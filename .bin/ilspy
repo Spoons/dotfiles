@@ -1,0 +1,3 @@
+#!/bin/sh
+
+exec $HOME/build/AvaloniaILSpy/artifacts/linux-x64/ILSpy

@@ -43,6 +43,10 @@ export VIMINIT="source $HOME/.config/nvim/init.vim"
 export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
 export _JAVA_AWT_WM_NONREPARENTING=1
 
+# Unity / Mono
+export FrameworkPathOverride=/lib/mono/4.8-api
+
+
 # Application Data
 export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
 export GOPATH="$XDG_DATA_HOME"/go
@@ -55,6 +59,9 @@ export QT_QPA_PLATFORMTHEME=gtk3
 
 # Games
 export RMM_PATH="~/apps/rimworld"
+
+export CASE_SENSITIVE=false
+export HYPHEN_INSENSITIVE=true
 
 [[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir -p "$ZSH_CACHE_DIR"
 [[ -f "$ZDIR/zinfo"      ]] && . "$ZDIR/zinfo"

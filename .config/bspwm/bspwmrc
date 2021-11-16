@@ -36,6 +36,7 @@ bspc rule -a QjackCtl               desktop=^5
 bspc rule -a emacs                  desktop=^2
 bspc rule -a mpv                    desktop=^7
 bspc rule -a play                   desktop=^7
+bspc rule -a kitty                  rectangle=800x600+0+0 center=true
 
 bspc rule -a Carla                  state=tiled desktop=^5
 bspc rule -a carla-bridge-win32.exe state=floating desktop=^5
@@ -44,3 +45,7 @@ bspc rule -a "Tor Browser"          state=floating desktop=^9
 bspc rule -a Screenkey              manage=off
 
 xsetroot -cursor_name left_ptr
+
+bspc rule -a scratchpad sticky=on state=floating hidden=on
+# check scratchpad already running
+[ "$(ps -x | grep -c 'scratchpad')" -eq "1" ] && kitty --class=scratchpad bspwm-scratch
