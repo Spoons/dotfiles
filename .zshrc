@@ -63,6 +63,21 @@ export RMM_PATH="~/apps/rimworld"
 export CASE_SENSITIVE=false
 export HYPHEN_INSENSITIVE=true
 
+P10KDIR="$HOME/.powerlevel10k"
+if [[ ! -d "$P10KDIR" ]]; then
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
+fi
+
+FZFDIR="$HOME/.fzf"
+if [[ ! -d "$FZFDIR" ]]; then
+    git clone --depth 1 https://github.com/junegunn/fzf.git "$FZFDIR"
+    "$FZFDIR/install"
+fi
+
+if [[ -f "$HOME/.fzf.zsh" ]]; then
+    source "$HOME/.fzf.zsh"
+fi
+
 [[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir -p "$ZSH_CACHE_DIR"
 [[ -f "$ZDIR/zinfo"      ]] && . "$ZDIR/zinfo"
 

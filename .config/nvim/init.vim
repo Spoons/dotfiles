@@ -42,6 +42,12 @@ if has('termguicolors')
     let g:terminal_color_background="#1e1f28"
 endif
 
+let data_dir = has('nvim') ? stdpath('data') . '/site' : '~/.vim'
+if empty(glob(data_dir . '/autoload/plug.vim'))
+  silent execute '!curl -fLo '.data_dir.'/autoload/plug.vim --create-dirs  https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+
 " Plugin Collection
 filetype indent on
 call plug#begin('~/.local/share/nvim/plugged')
