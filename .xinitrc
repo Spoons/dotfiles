@@ -53,11 +53,11 @@ if xinput | grep -q SYNA8004; then
 fi
 
 set_wallpaper() {
-    feh --bg-center "$1" &
+    feh --bg-fill "$1" &
 }
 
 launch_polybar() {
-    _PANEL_NAME="${1-top}" #launch with default name if not set
+    _PANEL_NAME="${1:-default}" #launch with default name if not set
     polybar -c ~/.config/polybar/config "$_PANEL_NAME" &
 }
 
@@ -69,7 +69,7 @@ case "$HOSTNAME" in
         nvffc -e
         ;;
     hatsune)
-        POLYBAR_PANEL_NAME="top-4k"
+        POLYBAR_PANEL_NAME="4k"
         set_wallpaper "$HOME/local/wallpaper/wallhaven-ymz61d.jpg"
         xfce4-power-manager &
         ;;

@@ -1,7 +1,7 @@
 ; Author: Michael Ciociola
 ; License: GPLv3
 
-[bar/top-4k]
+[bar/4k]
 inherit = bar/default
 height = 80
 
