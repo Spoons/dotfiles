@@ -34,11 +34,11 @@ _build() {
 _main() {
   _sudo_loop
   repopaths=(
-    "$HOME/local/software/linux-tkg"
-    "$HOME/local/software/wine-tkg-git/wine-tkg-git"
-    "$HOME/local/software/wine-tkg-git/proton-tkg-git"
-    "$HOME/local/software/nvidia-all"
-    "$HOME/local/software/grub-hook"
+    "$HOME/build/linux-tkg"
+    "$HOME/build/wine-tkg-git/wine-tkg-git"
+    "$HOME/build/wine-tkg-git/proton-tkg-git"
+    "$HOME/build/nvidia-all"
+    "$HOME/build/grub-hook"
   )
   stdinput=(
     "\n"

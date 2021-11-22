@@ -3,6 +3,8 @@
 # Author: Michael Ciociola
 # License: GPLv3
 
+
+
 _comp_options+=(globdots)
 autoload -U compinit; compinit
 export HISTSIZE=922337203685477580
@@ -58,28 +60,45 @@ export XCURSOR_SIZE="32"
 export QT_QPA_PLATFORMTHEME=gtk3
 
 # Games
-export RMM_PATH="~/apps/rimworld"
+export RMM_PATH="~/games/rimworld"
 
 export CASE_SENSITIVE=false
 export HYPHEN_INSENSITIVE=true
 
+
+# set hostname var if not set
+if [ -z "$HOSTNAME" ]; then
+    export HOSTNAME="$(cat /proc/sys/kernel/hostname)"
+fi
+
+# install p10k if not installed
 P10KDIR="$HOME/.powerlevel10k"
 if [[ ! -d "$P10KDIR" ]]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/.powerlevel10k
 fi
 
+# install fzf if not installed
 FZFDIR="$HOME/.fzf"
 if [[ ! -d "$FZFDIR" ]]; then
     git clone --depth 1 https://github.com/junegunn/fzf.git "$FZFDIR"
     "$FZFDIR/install"
 fi
 
+# load fzf if it exists
 if [[ -f "$HOME/.fzf.zsh" ]]; then
     source "$HOME/.fzf.zsh"
 fi
 
+# stores completions cache
 [[ ! -d "$ZSH_CACHE_DIR" ]] && mkdir -p "$ZSH_CACHE_DIR"
+# personal information
 [[ -f "$ZDIR/zinfo"      ]] && . "$ZDIR/zinfo"
 
 # Load zsh plugins
 for f ($ZDIR/load.d/**/*.zsh(N.))  . $f
+
+if [[ -x "$ZDIR/host.d/$HOSTNAME.zsh" ]]; then
+    . "$ZDIR/host.d/$HOSTNAME.zsh"
+fi
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

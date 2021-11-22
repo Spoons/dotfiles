@@ -94,7 +94,7 @@ super + bracket{left,right}
 #bspc {node,desktop} -f last
 
 super + d
-	bspc node -f next.local
+	bspc node -g hidden
 
 # focus the older or newer node in the focus history
 super + {o,i}
