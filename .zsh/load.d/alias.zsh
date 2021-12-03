@@ -20,7 +20,7 @@ alias ytb="youtube-dl-fast -f best"
 #### Tmux
 if (( $+commands[tmux] )); then
     alias ta='tmux attach'
-    function ts {
+    ts () {
         tmux new-session -s ${1:-tmux}
     }
     alias tl='tmux list-sessions'
@@ -109,5 +109,5 @@ hash -d download=~/local/download
 hash -d desktop=~/local/desktop
 hash -d wallpaper=~/library/images/wallpapers
 hash -d screenshots=~/personal/image/screenshots
-hash -d pkg=/mnt/850/makepkg/pkgdest
-hash -d src=/mnt/850/makepkg/srcdest
+hash -d pkg=/mnt/build/makepkg/pkgdest
+hash -d src=/mnt/build/makepkg/srcdest

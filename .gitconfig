@@ -5,14 +5,33 @@
 [color]
     ui = true
 [color "branch"]
-    current = yellow reverse
-    local = yellow
-    remote = green
+	current = 6 normal bold
+	local = 6 normal bold dim
+	remote = 3 normal bold dim
+	plain = 6 normal bold dim
+	upstream = 3 normal bold
 [color "diff"]
-    meta = yellow bold
-    frag = magenta bold
-    old = red
-    new = green
+	meta = normal
+	frag = normal ul
+	old = 9 normal dim
+	new = 10 normal
+	commit = 3 normal bold
+	newMoved = 14 normal
+	oldMovedAlternativeDimmed = 4 normal dim
+	oldMovedAlternative = 12 normal dim
+	contextBold = normal bold
+	newBold = 10 normal bold
+	context = normal
+	oldMoved = 14 normal dim
+	oldBold = 9 normal dim bold
+	newMovedDimmed = 6 normal
+	func = normal ul
+	newDimmed = 2 normal
+	newMovedAlternative = 12 normal
+	newMovedAlternativeDimmed = 4 normal
+	whitespace = normal 9
+	oldMovedDimmed = 6 normal dim
+	oldDimmed = 1 normal dim
 [alias]
     # add
     a = add 
@@ -90,6 +109,7 @@
 [diff]
     tool = nvim
     mnemonicprefix = true
+	colorMoved = zebra
 [diftool]
     prompt = False
     trustExitCode = True
@@ -121,3 +141,31 @@
 	required = true
 	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
+[color "status"]
+	branch = 6 normal bold
+	added = 10 normal
+	updated = 10 normal
+	localbranch = 6 normal bold
+	changed = 11 normal
+	header = normal
+	remotebranch = 3 normal bold
+	nobranch = 1 normal bold
+	unmerged = 9 normal
+	untracked = normal dim
+[color "remote"]
+	hint = normal dim
+	success = 2 normal
+	error = 1 normal
+	warning = 3 normal
+[color "interactive"]
+	header = normal bold
+	prompt = 15 4
+	help = normal
+	error = 1 normal bold
+[color "decorate"]
+	branch = 6 normal bold
+	tag = 3 normal bold
+	remotebranch = 3 normal bold
+	stash = normal
+	grafted = 1 normal bold
+	HEAD = 6 normal bold dim

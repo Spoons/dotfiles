@@ -37,6 +37,12 @@ if !&sidescrolloff
     set sidescrolloff=5 " Show next 5 columns while side-scrolling.
 endif
 
+autocmd ColorScheme * highlight Normal ctermbg=NONE guibg=NONE
+autocmd ColorScheme * highlight LineNr ctermbg=NONE guibg=NONE
+autocmd ColorScheme * highlight CursorLineNr ctermbg=NONE guibg=NONE
+autocmd Colorscheme * highlight SignColumn ctermbg=NONE guibg=NONE
+
+
 if has('termguicolors')
     set termguicolors
     let g:terminal_color_background="#1e1f28"
@@ -288,3 +294,5 @@ function! s:DiffWithSaved()
     exe 'setlocal bt=nofile bh=wipe nobl noswf ro ft=' . filetype
 endfunction
 com! DiffSaved call s:DiffWithSaved()
+
+
