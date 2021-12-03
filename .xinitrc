@@ -1,4 +1,4 @@
-#! /bin/sh
+#!/bin/zsh
 # Author: Michael Ciociola
 # License: GPLv3
 

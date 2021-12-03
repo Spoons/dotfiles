@@ -1,14 +1,14 @@
-#! /bin/sh
+#!/bin/zsh
 # Author: Michael Ciociola
 # License: GPLv3
 
 
-if [ "$(hostname)" = "iroh" ]; then
+if [[ "$HOSTNAME" == 'iroh' ]]; then
   bspc monitor DP-4 -d 1 2 3 4 5 6 7 8 9
 fi
 
-if [ "$(hostname)" = 'hatsune' ]; then
-  bspc monitor eDP-1 -d web term chat code music read 7
+if [ "$HOSTNAME" = 'hatsune' ]; then
+  bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9
 fi
 
 bspc config border_width            0

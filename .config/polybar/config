@@ -12,7 +12,6 @@ width = 100%
 height = 35
 offset-x = 0
 offset-y = -1
-monitor = DP-4
 ;bottom = true
 
 background = #c0000000
