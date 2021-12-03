@@ -3,6 +3,14 @@
 # License: GPLv3
 # 2021-04-06
 
+
+
+__update_tkg() {
+  pushd "$1"
+  print "3\n4\n" | ./TkgThingy
+  popd
+}
+
 _sudo_loop() {
   # Prevent sudo timeout
   sudo -v # ask for sudo password up-front
@@ -28,34 +36,30 @@ _update() {
 }
 
 _build() {
-  makepkg -si --noconfirm --needed
+  print "$1" | makepkg -si --cleanbuild --noconfirm --needed
 }
 
 _main() {
-  _sudo_loop
+
+  local REPOS_PATH="$HOME/build"
+  local TKG_PATH="$REPOS_PATH/tkg"
+
   repopaths=(
-    "$HOME/build/linux-tkg"
-    "$HOME/build/wine-tkg-git/wine-tkg-git"
-    "$HOME/build/wine-tkg-git/proton-tkg-git"
-    "$HOME/build/nvidia-all"
-    "$HOME/build/grub-hook"
+    "$REPOS_PATH/grub-hook"
+    "$TKG_PATH/nvidia-all"
   )
   stdinput=(
-    "\n"
-    "\n"
-    "\n"
     ""
     ""
   )
   gitmerge=(
-    ""
-    ""
-    ""
     "true"
+    ""
   )
 
-  # update world
+  _sudo_loop
   sudo pacman --noconfirm -Syu
+  __update_tkg "$TKG_PATH"
 
   owd="$(pwd)"
   for ((i = 1; i < $#repopaths; i++)); do
@@ -65,7 +69,18 @@ _main() {
       read -r -d '' -t 0.1 -n 10000
     fi
   done
-  cd "$owd" || exit
+
+
+  cd "$TKG_PATH/linux-tkg" || exit
+  print "\n" | makepkg --cleanbuild -si
+
+  cd "$TKG_PATH/wine-tkg-git/wine-tkg-git" || exit
+  yes | makepkg --cleanbuild -si
+
+  cd "$TKG_PATH/wine-tkg-git/proton-tkg" || exit
+  yes | makepkg --cleanbuild -si
+
+  cd "$owd"
 }
 
-_main
+_main 
