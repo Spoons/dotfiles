@@ -1,1 +1,0 @@
-WINEDEBUG="-all" WINEPREFIX="/home/miffi/.config/stl/mo2/compatdata/pfx" "/home/miffi/.config/stl/proton/custom/Proton-6.17-STL-1/files/bin/wine" "/home/miffi/.config/stl/mo2/compatdata/pfx/drive_c/Modding/MO2/ModOrganizer.exe" "$1"

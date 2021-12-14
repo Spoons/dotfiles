@@ -48,7 +48,7 @@ search_common_files() {
 
 edit_common_config_file() {
     # eval $EDITOR "$(fd -t f ~/.zsh/load.d ~/.bin ~/.zshrc ~/.config | fzf --delimeter / --with-nth -1)"
-    eval $EDITOR "$((search_common_files) | fzf)"
+    eval $EDITOR "$(search_common_files | fzf)"
 }
 
 edit_zsh_config_file() {
@@ -74,7 +74,6 @@ alias lxo="less $HOME/.cache/Xoutput"
 alias Y="| yank "
 alias YL="| yank -l"
 alias E="| emacs -nw -"
-alias E="| vim -"
 alias FZF="| fzf "
 alias G="| grep -i "
 alias GV="| grep -iV "
