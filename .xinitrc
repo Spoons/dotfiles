@@ -100,6 +100,7 @@ picom --experimental-backends --backend glx --xrender-sync-fence &
 redshift -l 35:-80 -t 5700:3600 -m randr &
 sxhkd -m -1 & #keyboard daemon
 xidlehook --not-when-fullscreen --not-when-audio --timer 300 'lockscreen.sh' '' &
+xfce4-clipman &
 
 
 # launch bspwm by default if no argument is specified

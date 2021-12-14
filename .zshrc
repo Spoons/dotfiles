@@ -6,20 +6,59 @@ zstyle ':z4h:autosuggestions' forward-char 'accept'
 zstyle ':z4h:fzf-complete' recurse-dirs 'no'
 zstyle ':z4h:direnv'         enable 'yes'
 zstyle ':z4h:direnv:success' notify 'yes'
-zstyle ':z4h:ssh:example-hostname1'   enable 'yes'
-zstyle ':z4h:ssh:*.example-hostname2' enable 'no'
 zstyle ':z4h:ssh:*'                   enable 'no'
-zstyle ':z4h:ssh:*' send-extra-files '~/.nanorc' '~/.env.zsh'
+zstyle ':z4h:ssh:*-office'      enable 'yes'
+zstyle ':z4h:ssh:*-office' send-extra-files '~/.doom.d/config.el' '~/.doom.d/init.el' '~/.doom.d/packages.el' 
 
-[ -n $DISPLAY && -n $XDG_VTNR ] &&
-    zstyle ':z4h:' start-tmux no
 
-z4h source "~/.zsh/zstyle.zsh"
+AGENT_SOCK=$(gpgconf --list-dirs | grep agent-socket | cut -d : -f 2)
+
+if [[ ! -S $AGENT_SOCK ]]; then
+  gpg-agent --daemon --use-standard-socket &>/dev/null
+fi
+export GPG_TTY=$TTY
+
+# Set SSH to use gpg-agent if it's enabled
+GNUPGCONFIG="${GNUPGHOME:-"$HOME/.gnupg"}/gpg-agent.conf"
+if [[ -r $GNUPGCONFIG ]] && command grep -q enable-ssh-support "$GNUPGCONFIG"; then
+  export SSH_AUTH_SOCK="$AGENT_SOCK.ssh"
+  unset SSH_AGENT_PID
+fi
+
+# Start ssh-agent
+if ! pgrep -u "$USER" ssh-agent > /dev/null; then
+    ssh-agent -t 1h > "$XDG_RUNTIME_DIR/ssh-agent.env"
+fi
+if [[ ! "$SSH_AUTH_SOCK" ]]; then
+    source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
+fi
+
+if [[ -z $DISPLAY && XDG_VTNR -eq 1 ]]; then
+  zstyle ':z4h:' start-tmux no
+fi
+
+
 z4h install ohmyzsh/ohmyzsh || return
+z4h install agkozak/zsh-z || return
+z4h install djui/alias-tips || return
+
+if [ ! -e "$HOME/.emacs.d/bin/doom" ]; then
+  if [ -d "$HOME/.emacs.d" ]; then
+    print "Moving .emacs.d folder to emacs-$(date --iso)"
+    mv $HOME/.emacs.d "$HOME/emacs-$(date --iso)"
+  fi
+  git clone --depth 1 https://github.com/hlissner/doom-emacs ~/.emacs.d
+  ~/.emacs.d/bin/doom install
+fi
+
+z4h load agkozak/zsh-z
+z4h load djui/alias-tips
+z4h load ohmyzsh/ohmyzsh/plugins/copyfile
+
 z4h init || return
 
 # Extend PATH.
-path=(~/.pbin ~/.bin ~/bin $path)
+path=(~/.pbin ~/.bin $path)
 
 # set hostname var if not set
 if (( ${+HOSTNAME} )); then
@@ -49,7 +88,6 @@ export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_CACHE_HOME="$HOME/.cache"
 
 # System
-export PATH="$HOME/.local/bin:$HOME/.pbin:$HOME/.bin:$PATH"
 export LIBVIRT_DEFAULT_URI="qemu:///system"
 
 # Nvim
@@ -104,5 +142,12 @@ setopt hist_ignore_all_dups
 setopt pushd_ignore_dups    # Do not store duplicates in the stack.
 setopt pushd_silent         # Do not print the directory stack after pushd or popd.
 
+
 # Load zsh plugins
 for f ($ZDIR/load.d/**/*.zsh(N.))  . $f
+
+
+
+if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
+ exec startx &> ~/.cache/Xoutput
+fi
