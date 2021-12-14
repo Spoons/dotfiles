@@ -36,7 +36,7 @@ _update() {
 }
 
 _build() {
-  print "$1" | makepkg -si --cleanbuild --noconfirm --needed
+  eval "$1" | makepkg -si --cleanbuild --noconfirm --needed || exit
 }
 
 _main() {
@@ -47,18 +47,28 @@ _main() {
   repopaths=(
     "$REPOS_PATH/grub-hook"
     "$TKG_PATH/nvidia-all"
+    "$TKG_PATH/linux-tkg"
+    "$TKG_PATH/wine-tkg-git/wine-tkg-git" 
+    "$TKG_PATH/wine-tkg-git/proton-tkg" 
   )
   stdinput=(
     ""
     ""
+    "print \"\n\""
+    "yes"
+    "yes"
   )
   gitmerge=(
     "true"
+    ""
+    ""
+    ""
     ""
   )
 
   _sudo_loop
   sudo pacman --noconfirm -Syu
+  yay --noconfirm -Syua
   __update_tkg "$TKG_PATH"
 
   owd="$(pwd)"
@@ -69,16 +79,6 @@ _main() {
       read -r -d '' -t 0.1 -n 10000
     fi
   done
-
-
-  cd "$TKG_PATH/linux-tkg" || exit
-  print "\n" | makepkg --cleanbuild -si
-
-  cd "$TKG_PATH/wine-tkg-git/wine-tkg-git" || exit
-  yes | makepkg --cleanbuild -si
-
-  cd "$TKG_PATH/wine-tkg-git/proton-tkg" || exit
-  yes | makepkg --cleanbuild -si
 
   cd "$owd"
 }
