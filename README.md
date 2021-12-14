@@ -17,6 +17,8 @@ This repository contains my personal dotfiles. I use yadm to manage and deploy t
 | Irc          | circe          |
 | File Manager | ranger         |
 
+If you use an Nvidia GPU setup with X11, you may find the `.bin/nvffc` script useful for eliminating screen tearing. Additionally, I recommend my systemd aliases in `.zsh/load.d/systemd.zsh`.
+
 ## Setup
 To deploy this configuration install yadm through your distribution package manage and clone with `yadm clone https://https://gim/Spoons/dotfiles.git`.
 
