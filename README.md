@@ -1,8 +1,6 @@
 # dotfiles
-----
-Nothing is as comforting as sitting by a stoked fire on a cold winters day, obsessing over your dotfiles.
+I find nothing more comforting that obsessing over my dotfiles. May my obsession help you on your Unix journey.
 
-## Screenshots
 ## Introduction
 This repository contains my personal dotfiles. I use yadm to manage the git repository and deploy them. However, uses of yadm is certainly not necessary. I would imagine you would be best served by looking through these files and adding what you like to your personal files. However, you certainly could deploy them directly to your machine. There exists only minimal configuration specific to me in this repository.
 
@@ -35,4 +33,4 @@ yadm push
 ```
 
 ## ZSH Configuration
-Zsh scripts are dynamically loaded in the `~/.zsh/load.d` directory. Place any additional zsh configuration into that directory and they will be read during interactive initialization. 
+Zsh scripts are dynamically loaded in the `~/.zsh/load.d` directory. Place any additional zsh configuration into that directory and they will be read during interactive initialization.
