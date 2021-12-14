@@ -2,7 +2,7 @@
 I find nothing more comforting that obsessing over my dotfiles. May my obsession help you on your Unix journey.
 
 ## Introduction
-This repository contains my personal dotfiles. I use yadm to manage the git repository and deploy them. However, uses of yadm is certainly not necessary. I would imagine you would be best served by looking through these files and adding what you like to your personal files. However, you certainly could deploy them directly to your machine. There exists only minimal configuration specific to me in this repository.
+This repository contains my personal dotfiles. I use yadm to manage and deploy them. There is minimal machine specific configuration in the `.xinitrc`. 
 
 | Application  | Choice         |
 |--------------|----------------|
@@ -20,7 +20,9 @@ This repository contains my personal dotfiles. I use yadm to manage the git repo
 ## Setup
 To deploy this configuration install yadm through your distribution package manage and clone with `yadm clone https://https://gim/Spoons/dotfiles.git`.
 
-Alternatively, clone this repository and import into your dotfile management scheme of your choice. Any missing dependencies will be automatically installed upon the next interactive invocation of zsh.
+Alternatively, clone this repository and import into your dotfile management scheme of your choice. 
+
+Any missing dependencies will be automatically installed upon the next interactive invocation of zsh.
 
 ## Managing Files
 Yadm is a thin wrapper around git. Simply use the default git subcommands to manage your files.
@@ -33,4 +35,4 @@ yadm push
 ```
 
 ## ZSH Configuration
-Zsh scripts are dynamically loaded in the `~/.zsh/load.d` directory. Place any additional zsh configuration into that directory and they will be read during interactive initialization.
+Zsh scripts are dynamically loaded in the `~/.zsh/load.d` directory. Place any additional zsh configuration into that directory and they will be interpreted during zsh startup. Ensure they are executable.
