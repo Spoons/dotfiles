@@ -4,6 +4,18 @@
 [bar/4k]
 inherit = bar/default
 height = 80
+font-0 = "Noto Sans:pixelsize=10;2"
+font-1 = "FontAwesome:size=9;2"
+font-2 = "siji:pixelsize=9;0"
+font-3 = "Noto Sans CJK JP:pixelsize=9;2"
+font-4 = "Noto Sans CJK KR:pixelsize=9;2"
+font-5 = "Noto Sans CJK TC:pixelsize=9;2"
+font-6 = "Noto Sans CJK SC:pixelsize=9;2"
+font-7 = "Noto Sans CJK HK:pixelsize=9;2"
+font-8 = "Noto Color Emoji:pixelsize=9;2"
+modules-left = bspwm-4k xwindow
+modules-center =
+modules-right = battery volume date powermenu
 
 [bar/default]
 enable-ipc = true
@@ -62,12 +74,6 @@ scroll-down = bspwm-deskprev
 [module/bspwm]
 type = internal/bspwm
 
-; ws-icon-0 = web;
-; ws-icon-1 = term;
-; ws-icon-2 = chat;
-; ws-icon-3 = code;
-; ws-icon-4 = music;
-; ws-icon-5 = read;
 ws-icon-0 = 1;web
 ws-icon-1 = 2;emacs
 ws-icon-2 = 3;term
@@ -98,6 +104,12 @@ label-empty = %icon%
 label-empty-foreground = #44ffffff
 label-empty-padding = 4
 
+[module/bspwm-4k]
+inherit = module/bspwm
+label-focused-padding = 2
+label-occupied-padding = 2
+label-urgent-padding = 2
+label-empty-padding = 2
 
 [module/xwindow]
 type = internal/xwindow
