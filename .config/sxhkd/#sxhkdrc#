@@ -1,4 +1,4 @@
-# Author: Michael Ciociola
+ # Author: Michael Ciociola
 # License: GPLv3
 
 # applications: firefox, emacs, thunderbird, signal, ranger, ncmpcpp, pavucontrol, window class, play
@@ -60,8 +60,11 @@ super + y
 
 # # swap the current node and the biggest window
 # super + i
-# 	bspc node -s biggest.window
+	# 	bspc node -s biggest.window
 
+# swap window with biggest local
+super + i
+	bspc node -s biggest.local
 
 
 # set the window state: tiled, ps, float, full
@@ -81,18 +84,17 @@ super + {_,shift + }{h,t,n,s}
 	# bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous window in the current desktop
-# super + {_,shift + }c
-# 	bspc node -f {next,prev}.local.!hidden.window
+super + {_,shift + }c
+	bspc node -f {next,prev}.local.!hidden.window
 
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
 
 #focus the last node/desktop
-super + {grave,Tab}
-	bspc {node,desktop} -f last
+#super + {grave,Tab}
+#bspc {node,desktop} -f last
 
-# hide current node
 super + d
 	bspc node -g hidden
 
@@ -107,24 +109,25 @@ super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
 # focus the next/previous node in the same window
-# super + {comma,period}
-# 	bspc node -f {next,prev}.local
+super + {comma,period}
+	bspc node -f {next,prev}.local
+
 
 # preselect the direction
 super + ctrl + {h,t,n,s}
 	bspc node -p {west,south,north,east}
 
 # preselect the ratio
-# super + ctrl + {1-9}
-# 	bspc node -o 0.{1-9}
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
 super + ctrl + space
 	bspc node -p cancel
 
 # cancel the preselection for the focused desktop
-# super + ctrl + shift + space
-# 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
 
 # expand a window by moving one of its side outward
 super + alt + {h,t,n,s}
@@ -135,8 +138,8 @@ super + alt + shift + {h,t,n,s}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
 # move a floating window
-# super + {Left,Down,Up,Right}
-# 	bspc node -v {-20 0,0 20,0 -20,20 0}
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
 
 # change gap
 super + {equal,minus}
@@ -167,15 +170,34 @@ Print
 	xfce4-screenshooter -d 3 -f -s ~/personal/image/screenshots; \
 	notify-send "Screenshot saved"
 
+# screenshot clipboard
+ctrl + Print
+	xfce4-screenshooter -d 3 -f -c; \
+	notify-send "Screenshot copied to clipboard"
+
+# screenshot save default location
 shift + Print
 	xfce4-screenshooter -d 3 -r -s ~/personal/image/screenshots; \
 	notify-send "Screenshot saved"
 
+# screenshot partial clipboard
+ctrl + shift + Print
+	xfce4-screenshooter -d 3 -r -c; \
+	notify-send "Screenshot copied to clipboard"
+
+
 super + shift + x
 	~/.pbin/lockscreen.sh
 
-super + p
+super + shift + p
 	passmenu
+
+super + j
+	bspc node -n 'last.!automatic.local'
+
+super + grave
+	id=$(cat /tmp/scratchid);\
+	bspc node $id --flag hidden;bspc node -f $id
 
 # return hidden
 super + u

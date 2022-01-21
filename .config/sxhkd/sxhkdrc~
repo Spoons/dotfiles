@@ -1,25 +1,8 @@
 # Author: Michael Ciociola
 # License: GPLv3
 
-# applications: firefox, emacs, thunderbird, signal, ranger, ncmpcpp, pavucontrol, window class, play
-super + alt + b
-	firefox
-super + alt + e
-	kitty --class emacs --name emacs emacsclient -nw
-super + alt + m
-	thunderbird
-super + alt + c
-	signal-desktop
-super + alt + f
-	kitty ranger
-super + alt + p
-	kitty --class ncmpcpp --name ncmpcpp ncmpcpp
-super + alt + a
-	pavucontrol
-super + alt + i
-	notify-send "$(xprop | grep 'CLASS')"
-super + alt + v
-	kitty --class play --name play play
+super + alt + {b,e,m,c,f,p,a,i}
+	{firefox, emacs, thunderbird, signal-desktop, kitty ranger, kitty ncmpcpp, pavucontrol, notify-send "$(xprop | grep 'CLASS')"}
 
 # Show Help
 super + slash
@@ -31,7 +14,7 @@ super + Return
 
 # program launcher
 super + @space
-	rofi -combi-modi window,drun,run -show combi -modi combi -dpi 1
+	rofi -combi-modi run,window,drun -show combi -modi combi -dpi 1
 
 # make sxhkd reload its configuration files:
 super + Escape
@@ -62,7 +45,12 @@ super + y
 # super + i
 # 	bspc node -s biggest.window
 
+super + i
+    bspc node -s biggest.local
 
+#
+# state/flags
+#
 
 # set the window state: tiled, ps, float, full
 super + {a, shift + a, z, v}
@@ -70,7 +58,11 @@ super + {a, shift + a, z, v}
 
 # set the node flags: mark, lock, stick, private
 super + ctrl + {m,x,y,z}
-	bspc node -g {marked,locked,sticky,private}
+    bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
 
 # focus the node in the given direction
 super + {_,shift + }{h,t,n,s}
@@ -78,23 +70,19 @@ super + {_,shift + }{h,t,n,s}
 
 # focus the node for the given path jump
 # super + {p,b,comma,period}
-	# bspc node -f @{parent,brother,first,second}
+# 	bspc node -f @{parent,brother,first,second}
 
 # focus the next/previous window in the current desktop
-# super + {_,shift + }c
-# 	bspc node -f {next,prev}.local.!hidden.window
+super + {_,shift + }c
+	bspc node -f {next,prev}.local.!hidden.window
 
 # focus the next/previous desktop in the current monitor
 super + bracket{left,right}
 	bspc desktop -f {prev,next}.local
 
-#focus the last node/desktop
+# focus the last node/desktop
 super + {grave,Tab}
 	bspc {node,desktop} -f last
-
-# hide current node
-super + d
-	bspc node -g hidden
 
 # focus the older or newer node in the focus history
 super + {o,i}
@@ -107,24 +95,32 @@ super + {_,shift + }{1-9,0}
 	bspc {desktop -f,node -d} '^{1-9,10}'
 
 # focus the next/previous node in the same window
-# super + {comma,period}
-# 	bspc node -f {next,prev}.local
+super + {comma,period}
+    bspc node -f {next,prev}.local
+
+#
+# preselect
+#
 
 # preselect the direction
 super + ctrl + {h,t,n,s}
 	bspc node -p {west,south,north,east}
 
 # preselect the ratio
-# super + ctrl + {1-9}
-# 	bspc node -o 0.{1-9}
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
 
 # cancel the preselection for the focused node
 super + ctrl + space
 	bspc node -p cancel
 
 # cancel the preselection for the focused desktop
-# super + ctrl + shift + space
-# 	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
 
 # expand a window by moving one of its side outward
 super + alt + {h,t,n,s}
@@ -135,8 +131,8 @@ super + alt + shift + {h,t,n,s}
 	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
 
 # move a floating window
-# super + {Left,Down,Up,Right}
-# 	bspc node -v {-20 0,0 20,0 -20,20 0}
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
 
 # change gap
 super + {equal,minus}
@@ -144,17 +140,15 @@ super + {equal,minus}
 
 # rotate tree
 super + ctrl + {Left,Right,Up,Down}
-	bspc node @focused:/ --rotate {270,90,180,180}
+    bspc node @focused:/ --rotate {270,90,180,180}
 
-# audio next prev play
+# Player Previous
 XF86Audio{Next,Prev,Play}
 	mpc {next,prev,toggle}
 
-# raise lower volume
 XF86Audio{Raise,Lower}Volume
 	pamixer -{i,d} 10 --allow-boost && polybar-msg hook mvol 1
 
-# mute volume
 XF86AudioMute
 	pamixer --toggle-mute && polybar-msg hook mvol 1
 
@@ -167,16 +161,26 @@ Print
 	xfce4-screenshooter -d 3 -f -s ~/personal/image/screenshots; \
 	notify-send "Screenshot saved"
 
+ctrl + Print
+	xfce4-screenshooter -d 3 -f -c; \
+	notify-send "Screenshot copied to clipboard"
+
 shift + Print
 	xfce4-screenshooter -d 3 -r -s ~/personal/image/screenshots; \
 	notify-send "Screenshot saved"
 
-super + shift + x
-	~/.pbin/lockscreen.sh
+ctrl + shift + Print
+	xfce4-screenshooter -d 3 -r -c; \
+	notify-send "Screenshot copied to clipboard"
 
-super + p
+super + shift + l
+	sleep 0.5; xset dpms force standby
+
+super + shift + x
+	betterlockscreen -l dim -t ''
+
+super + shift + p
 	passmenu
 
-# return hidden
-super + u
-	while bspc node any.hidden.window -g hidden=off; do :; done
+super + j
+	bspc node -n 'last.!automatic.local'
