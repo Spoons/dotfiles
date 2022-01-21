@@ -4,18 +4,22 @@
 [bar/4k]
 inherit = bar/default
 height = 80
-font-0 = "Noto Sans:pixelsize=10;2"
-font-1 = "FontAwesome:size=9;2"
-font-2 = "siji:pixelsize=9;0"
-font-3 = "Noto Sans CJK JP:pixelsize=9;2"
-font-4 = "Noto Sans CJK KR:pixelsize=9;2"
-font-5 = "Noto Sans CJK TC:pixelsize=9;2"
-font-6 = "Noto Sans CJK SC:pixelsize=9;2"
-font-7 = "Noto Sans CJK HK:pixelsize=9;2"
-font-8 = "Noto Color Emoji:pixelsize=9;2"
+font-0 = "Noto Sans:pixelsize=11;3"
+font-1 = "Font Awesome 5 Pro Solid:style=Solid:pixelsize=10;2"
+font-2 = "Font Awesome 5 Pro Regular:style=Regular:pixelsize=9"
+font-3 = "Font Awesome 5 Pro Light:style=Light:pixelsize=9"
+font-4 = "Font Awesome 5 Brands Regular:style=Regular:pixelsize=9"
+font-5 = "siji:pixelsize=9;0"
+font-6 = "Noto Sans CJK JP:pixelsize=9;2"
+font-7 = "Noto Sans CJK KR:pixelsize=9;2"
+font-8 = "Noto Sans CJK TC:pixelsize=9;2"
+font-9 = "Noto Sans CJK SC:pixelsize=9;2"
+font-10 = "Noto Sans CJK HK:pixelsize=9;2"
+font-11 = "Noto Color Emoji:pixelsize=9;2"
+font-12 = "Material Design Icons:style=Regular:pixelsize=12;3"
 modules-left = bspwm-4k xwindow
 modules-center =
-modules-right = battery volume date powermenu
+modules-right = volume battery date
 
 [bar/default]
 monitor = ${env:MONITOR:}
@@ -48,6 +52,7 @@ font-5 = "Noto Sans CJK TC:pixelsize=11;2"
 font-6 = "Noto Sans CJK SC:pixelsize=11;2"
 font-7 = "Noto Sans CJK HK:pixelsize=11;2"
 font-8 = "Noto Color Emoji:pixelsize=11;2"
+font-9 = "Material Design Icons:style=Regular:pixelsize=11;2"
 
 
 modules-left = i3 bspwm xwindow
@@ -126,22 +131,24 @@ interval = 1.0
 
 ; See "man date" for details on how to format the date string
 ; NOTE: if you want to use syntax tags here you need to use %%{...}
-date = %a %b %d,
+; date = %a %b %d,
+date = %a
 
 ; Optional time format
 time = %H:%M
 
 ; if `date-alt` or `time-alt` is defined, clicking
 ; the module will toggle between formats
-date-alt = %A, %d %B %Y
-time-alt = %H:%M:%S
+; date-alt = %A, %d %B %Y
+date-alt = %a %b %d,
+time-alt = %H:%M
 
 label = %date% %time%
-format =    <label>
+format = "<label>  "
 ;format-background = #ddffffff
 # format-background = #88000000
 ;format-foreground = #333
-format-padding = 3
+format-padding = 2
 
 [module/padding]
 type = custom/text
@@ -159,56 +166,55 @@ adapter = AC0
 
 poll-interval = 5
 
-format-charging = <animation-charging>  <label-charging>%
-format-discharging = <ramp-capacity>  <label-discharging>%
-format-full = <ramp-capacity>  <label-full>
+format-charging = %{T13}<animation-charging>%{T-}
+format-charging-padding = 1
+format-discharging = %{T13}<ramp-capacity>%{T-}
+format-discharging-padding = 1
+format-full = %{T13}󰂄%{T-}
+format-full-padding = 1
 label-charging = %percentage%
 label-discharging = %percentage%
 label-full = %percentage%
-format-charging-padding = 3
-format-discharging-padding = 3
-format-full-padding = 3
 
-ramp-capacity-0 = 
-ramp-capacity-1 = 
-ramp-capacity-2 = 
-ramp-capacity-3 = 
-ramp-capacity-4 = 
+ramp-capacity-0 = %{F#ff736a}󰂎%{F-}
+ramp-capacity-1 = %{F#ff736a}󰁺%{F-}
+ramp-capacity-2 = 󰁻
+ramp-capacity-3 = 󰁼
+ramp-capacity-4 = 󰁽
+ramp-capacity-5 = 󰁾
+ramp-capacity-6 = 󰁿
+ramp-capacity-7 = 󰂀
+ramp-capacity-8 = 󰂁
+ramp-capacity-9 = 󰂂
+ramp-capacity-10 = 󰁹
 
-animation-charging-0 = 
-animation-charging-1 = 
-animation-charging-2 = 
-animation-charging-3 = 
-animation-charging-4 = 
+animation-charging-0 = 󰂆
+animation-charging-1 = 󰂇
+animation-charging-2 = 󰂈
+animation-charging-3 = 󰂉
+animation-charging-4 = 󰂊
+animation-charging-5 = 󰂋
+animation-charging-6 = 󰂅
 animation-charging-framerate = 750
-
-[module/backlight]
-type = internal/backlight
-card = intel_backlight
-enable-scroll = false
-format = <ramp>  <label>%
-format-padding = 3
-label = %percentage%
-ramp-0 = 🌕
-ramp-1 = 🌔
-ramp-2 = 🌓
-ramp-3 = 🌒
-ramp-4 = 🌑
 
 [module/volume]
 type = internal/pulseaudio
+format-volume = %{T1}<ramp-volume>%{T-}
+format-muted = %{T1}<label-muted>%{T-}
+label-muted = "󰖁"
+label-muted-foreground = #44ffffff
+format-volume-padding = 2
+format-muted-padding = 2
 
-format-volume = <ramp-volume>  <label-volume>%
-format-muted = <label-muted>
-label-volume = %percentage%
-label-muted =   muted
-label-muted-foreground = #aaa
-format-volume-padding = 3
-format-muted-padding = 3
+; ramp-volume-0 = " "
+; ramp-volume-1 = " "
+; ramp-volume-2 = " "
+; ramp-headphones-0 = " "
 
 ramp-volume-0 = 
 ramp-volume-1 = 
-ramp-volume-2 = 
+ramp-volume-2 = 
+ramp-volume-3 = 
 ramp-headphones-0 = 
 
 [module/spotify]
@@ -233,8 +239,8 @@ label-open = 
 label-close = cancel
 ;label-close-background = #dd0000
 ;label-close-foreground = #fff
-label-open-padding = 4
-label-close-padding = 3
+label-open-padding = 2
+label-close-padding = 1
 
 menu-0-0 = reboot
 menu-0-0-exec = menu-open-1
