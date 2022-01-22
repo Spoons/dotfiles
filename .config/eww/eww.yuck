@@ -1,6 +1,10 @@
 (deflisten vol
   `~/.config/eww/vol.sh`)
 
+(defpoll brightness
+  :interval "100ms"
+  `~/.config/eww/brightness.sh`)
+
 (defwindow volume
   :monitor 0
   :geometry (geometry :y "20%"
@@ -27,4 +31,32 @@
                    :min 0
                    :max 100
                    :value {vol}
+                   :active false))))
+
+(defwindow brightness
+  :monitor 0
+  :geometry (geometry :y "20%"
+                      :anchor "center")
+  :stacking "fg"
+  :reserve (struts :distance "40px" :side "top")
+  :windowtype "dock"
+  :wm-ignore false
+  :class "trans"
+
+  (box :class "genwin"
+       ;; :spacing 25
+       :space-evenly false
+       (box :orientation "v"
+            :class "volbar"
+            :halign "center"
+            :valign "center"
+            :space-evenly false
+            ;; :spacing 00
+            (label :class "volicon"
+                   :halign "center"
+                   :text "b")
+            (scale :class "volscale"
+                   :min 0
+                   :max 100
+                   :value {brightness}
                    :active false))))
