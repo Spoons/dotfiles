@@ -6,17 +6,18 @@ inherit = bar/default
 height = 80
 font-0 = "Noto Sans:pixelsize=11;3"
 font-1 = "Font Awesome 5 Pro Solid:style=Solid:pixelsize=10;2"
-font-2 = "Font Awesome 5 Pro Regular:style=Regular:pixelsize=9"
-font-3 = "Font Awesome 5 Pro Light:style=Light:pixelsize=9"
-font-4 = "Font Awesome 5 Brands Regular:style=Regular:pixelsize=9"
-font-5 = "siji:pixelsize=9;0"
-font-6 = "Noto Sans CJK JP:pixelsize=9;2"
-font-7 = "Noto Sans CJK KR:pixelsize=9;2"
-font-8 = "Noto Sans CJK TC:pixelsize=9;2"
-font-9 = "Noto Sans CJK SC:pixelsize=9;2"
-font-10 = "Noto Sans CJK HK:pixelsize=9;2"
-font-11 = "Noto Color Emoji:pixelsize=9;2"
-font-12 = "Material Design Icons:style=Regular:pixelsize=12;3"
+font-2 = "Font Awesome 5 Pro Solid:style=Solid:pixelsize=12;2"
+font-3 = "Font Awesome 5 Pro Regular:style=Regular:pixelsize=9"
+font-4 = "Font Awesome 5 Pro Light:style=Light:pixelsize=9"
+font-5 = "Font Awesome 5 Brands Regular:style=Regular:pixelsize=9"
+font-6 = "siji:pixelsize=9;0"
+font-7 = "Noto Sans CJK JP:pixelsize=9;2"
+font-8 = "Noto Sans CJK KR:pixelsize=9;2"
+font-9 = "Noto Sans CJK TC:pixelsize=9;2"
+font-10 = "Noto Sans CJK SC:pixelsize=9;2"
+font-11 = "Noto Sans CJK HK:pixelsize=9;2"
+font-12 = "Noto Color Emoji:pixelsize=9;2"
+font-13 = "Material Design Icons:style=Regular:pixelsize=12;3"
 modules-left = bspwm-4k xwindow
 modules-center =
 modules-right = volume battery date
@@ -53,13 +54,14 @@ font-6 = "Noto Sans CJK SC:pixelsize=11;2"
 font-7 = "Noto Sans CJK HK:pixelsize=11;2"
 font-8 = "Noto Color Emoji:pixelsize=11;2"
 font-9 = "Material Design Icons:style=Regular:pixelsize=11;2"
+font-10 = "FontAwesome:size=13;2"
 
 
 modules-left = i3 bspwm xwindow
 modules-center =
 modules-right = battery volume mpd date powermenu
 
-;tray-position = right
+; tray-position = right
 ;tray-padding = 2
 ;tray-background = #66333333
 
@@ -146,9 +148,10 @@ time-alt = %H:%M
 label = %date% %time%
 format = "<label>  "
 ;format-background = #ddffffff
-# format-background = #88000000
+;format-background = #88000000
 ;format-foreground = #333
 format-padding = 2
+; format-after-padding = 5
 
 [module/padding]
 type = custom/text
@@ -159,19 +162,19 @@ content-background = #55000000
 [module/battery]
 type = internal/battery
 
-full-at = 99
+full-at = 89
 
 battery = BAT0
 adapter = AC0
 
 poll-interval = 5
 
-format-charging = %{T13}<animation-charging>%{T-}
-format-charging-padding = 1
-format-discharging = %{T13}<ramp-capacity>%{T-}
-format-discharging-padding = 1
-format-full = %{T13}󰂄%{T-}
-format-full-padding = 1
+format-charging = %{T14}<animation-charging>%{T-}
+; format-charging-padding = 1
+format-discharging = %{T14}<ramp-capacity>%{T-}
+; format-discharging-padding = 1
+format-full = %{T14}󰁹%{T-}
+; format-full-padding = 1
 label-charging = %percentage%
 label-discharging = %percentage%
 label-full = %percentage%
@@ -187,6 +190,7 @@ ramp-capacity-7 = 󰂀
 ramp-capacity-8 = 󰂁
 ramp-capacity-9 = 󰂂
 ramp-capacity-10 = 󰁹
+ramp-capacity-10-weight = 2
 
 animation-charging-0 = 󰂆
 animation-charging-1 = 󰂇
@@ -199,23 +203,37 @@ animation-charging-framerate = 750
 
 [module/volume]
 type = internal/pulseaudio
-format-volume = %{T1}<ramp-volume>%{T-}
-format-muted = %{T1}<label-muted>%{T-}
+format-volume = %{T3}<ramp-volume>%{T-}
+format-muted = %{T3}<label-muted>%{T-}
 label-muted = "󰖁"
 label-muted-foreground = #44ffffff
-format-volume-padding = 2
-format-muted-padding = 2
-
-; ramp-volume-0 = " "
-; ramp-volume-1 = " "
-; ramp-volume-2 = " "
-; ramp-headphones-0 = " "
+format-volume-padding = 1
+format-muted-padding = 1
 
 ramp-volume-0 = 
 ramp-volume-1 = 
 ramp-volume-2 = 
 ramp-volume-3 = 
 ramp-headphones-0 = 
+
+; [module/volume]
+; type = custom/script
+; tail = true
+; label-padding = 2
+; format = "%{T14}<label>%{T-}"
+; ; label-foreground = ${colors.foreground}
+
+; exec = polybar-pulse.sh listen --icons-volume ",,," --icon-muted "󰖁 "
+; click-right = exec pavucontrol &
+; click-left = polybar-pulse.sh togmute
+; click-middle = polybar-pulse.sh next-sink
+; scroll-up = polybar-pulse.sh --volume-max 100 up
+; scroll-down = polybar-pulse.sh --volume-max 100 down
+
+; ramp-volume-0 = 
+; ramp-volume-1 = 
+; ramp-volume-2 = 
+; ramp-volume-3 = 
 
 [module/spotify]
 type = custom/script
@@ -239,8 +257,8 @@ label-open = 
 label-close = cancel
 ;label-close-background = #dd0000
 ;label-close-foreground = #fff
-label-open-padding = 2
-label-close-padding = 1
+; label-open-padding = 2
+; label-close-padding = 1
 
 menu-0-0 = reboot
 menu-0-0-exec = menu-open-1
