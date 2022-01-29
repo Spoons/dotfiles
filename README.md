@@ -1,8 +1,5 @@
-# dotfiles
-I find nothing more comforting that obsessing over my dotfiles. May my obsession help you on your Unix journey.
-
 ## Introduction
-This repository contains my personal dotfiles. I use yadm to manage and deploy them. There is minimal machine specific configuration in the `.xinitrc`. 
+This repository contains my personal dotfiles. I use yadm to manage and deploy them. There is some minimal machine specific configuration in the `.xinitrc` and the `bspwmrc` files.
 
 | Application  | Choice         |
 |--------------|----------------|
@@ -17,7 +14,7 @@ This repository contains my personal dotfiles. I use yadm to manage and deploy t
 | Irc          | circe          |
 | File Manager | ranger         |
 
-If you use an Nvidia GPU setup with X11, you may find the `.bin/nvffc` script useful for eliminating screen tearing. Additionally, I recommend my systemd aliases in `.zsh/load.d/systemd.zsh`.
+If you use an Nvidia GPU setup with X11, you may find the `.bin/nvffc` script useful for eliminating screen tearing.
 
 ## Setup
 To deploy this configuration install yadm through your distribution package manage and clone with `yadm clone https://https://gim/Spoons/dotfiles.git`.
