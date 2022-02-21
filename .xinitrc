@@ -49,12 +49,12 @@ fi
 if xinput | grep -q SYNA8004; then
 	xinput --set-prop 'SYNA8004:00 06CB:CD8B Touchpad' \
 		'libinput Accel Speed' 1
-			xinput --set-prop 'SYNA8004:00 06CB:CD8B Touchpad' \
-				'libinput Natural Scrolling Enabled' 1
-							xinput --set-prop 'SYNA8004:00 06CB:CD8B Touchpad' \
-								'libinput Tapping Enabled' 1
-															xinput --set-prop 'TPPS/2 Elan TrackPoint' \
-																'libinput Accel Speed' 1
+	xinput --set-prop 'SYNA8004:00 06CB:CD8B Touchpad' \
+		'libinput Natural Scrolling Enabled' 1
+	xinput --set-prop 'SYNA8004:00 06CB:CD8B Touchpad' \
+		'libinput Tapping Enabled' 1
+	xinput --set-prop 'TPPS/2 Elan TrackPoint' \
+		'libinput Accel Speed' 1
 fi
 
 set_wallpaper() {
