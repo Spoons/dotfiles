@@ -1,0 +1,36 @@
+#!/bin/bash
+  
+pid_file="/tmp/bspwm-inhibit.pid"
+
+run() {
+  systemd-inhibit --what=handle-lid-switch:handle-hibernate-key:sleep:idle sleep 2592000 &
+}
+enabled() {
+  echo "  %{T2}%{T-}  "
+}
+disabled() {
+  echo "  %{F#44ffffff}%{T3}%{F- T-}  "
+}
+
+if [ -f $pid_file ]; then
+  pgrep -F $pid_file > /dev/null
+  pid_is_stale=$?
+  old_pid=$( cat $pid_file )
+  if [ $pid_is_stale -eq 1 ]; then
+    rm $pid_file
+  else 
+	if [[ "$1" == "-i" ]]; then
+	  enabled
+	  exit 0
+	fi
+	kill -9 $old_pid
+  fi
+else 
+  if [[ "$1" == "-i" ]]; then
+	disabled
+	exit 0
+  else
+	run
+	echo $! > $pid_file
+  fi
+fi

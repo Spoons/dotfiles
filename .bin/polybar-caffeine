@@ -1,0 +1,6 @@
+#!/bin/sh
+if xfconf-query -c xfce4-power-manager -p /xfce4-power-manager/presentation-mode -lv | grep -q true; then
+    echo "  %{T2}%{T-}  "
+else
+    echo "  %{F#44ffffff}%{T3}%{F- T-}  "
+fi

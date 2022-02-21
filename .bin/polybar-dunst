@@ -1,0 +1,10 @@
+#!/bin/sh
+if [ "$1" = "-i" ]; then
+	if dunstctl is-paused | grep -q false; then
+		echo "  %{F#44ffffff}%{T3}%{F- T-}  "
+	else
+		echo "  %{T2}%{T-}  "
+	fi
+else
+	dunstctl set-paused toggle
+fi

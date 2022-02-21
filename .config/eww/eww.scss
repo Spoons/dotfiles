@@ -1,0 +1,48 @@
+*{
+	all: unset;
+	font-family: feather;
+	font-family: Iosevka;
+}
+
+.trans {
+	// opacity: 0.5;
+}
+
+.genwin {
+	background-color: #2E3440;
+	border-radius: 16px;
+	padding: 1em;
+	padding-bottom: 2em;
+	padding-left: 2em;
+	padding-right: 2em;
+	// margin: 1em;
+	opacity: 0.5;
+}
+
+.volicon {
+	font-size : 20em;
+	font-weight : normal;
+	margin: -0.22em;
+	color: #ffffff;
+	opacity: 1.0;
+
+}
+
+volbar {
+	opacity: 1.0;
+}
+
+
+.volbar scale trough {
+	all: unset;
+	background-color: #3A404C;
+	border-radius: 16px;
+	min-height: 1em;
+	min-width: 20em;
+}
+
+.volbar scale trough highlight{
+	all: unset;
+	border-radius: 16px;
+	background-color: #ffffff;
+}

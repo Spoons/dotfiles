@@ -22,7 +22,6 @@ if (( $+commands[emacsclient] )); then
     if [[ "$TERM" == "xterm-kitty" ]] || [[ "$TERM" == "tmux-256color" ]]; then
         alias emacsclient="TERM=kitty-direct emacsclient"
     fi
-    export EDITOR='emacsclient -nw'
 fi
 
 

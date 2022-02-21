@@ -1,5 +1,0 @@
-#!/bin/sh
-
-while :; do
-  printf "\n"
-done

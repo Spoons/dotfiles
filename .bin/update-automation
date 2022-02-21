@@ -54,21 +54,21 @@ _main() {
   stdinput=(
     ""
     ""
-    "print \"\n\""
+#    "print \"\n\""
     "yes"
     "yes"
   )
   gitmerge=(
     "true"
     ""
-    ""
+#    ""
     ""
     ""
   )
 
   _sudo_loop
   sudo pacman --noconfirm -Syu
-  yay --noconfirm -Syua
+  # yay --noconfirm -Syua
   __update_tkg "$TKG_PATH"
 
   owd="$(pwd)"

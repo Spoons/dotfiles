@@ -1,0 +1,11 @@
+#!/bin/zsh
+
+declare -a pstatus; pstatus=( "${(f)$(playerctl -a status)}" )
+declare -a players; players=( "${(f)$(playerctl -l)}" )
+
+for i in {1..$#players}; do
+	if [[ $pstatus[i] == "Playing" ]]; then
+		echo "$(playerctl -p $players[i] metadata --format "{{ artist }}  -  {{ title }}")"
+	fi
+done
+echo

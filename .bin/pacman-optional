@@ -1,0 +1,10 @@
+import pyalpm
+
+handle = pyalpm.Handle('/', '/var/lib/pacman')
+localdb = handle.get_localdb()
+
+packages = localdb.search('')
+
+for n in packages:
+    if n.reason == 1 and n.compute_requiredby() == [] and n.compute_optionalfor():
+        print(n.name)

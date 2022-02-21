@@ -4,12 +4,68 @@ zstyle ':z4h:' prompt-at-bottom 'yes'
 zstyle ':z4h:bindkey' keyboard  'pc'
 zstyle ':z4h:autosuggestions' forward-char 'accept'
 zstyle ':z4h:fzf-complete' recurse-dirs 'no'
-zstyle ':z4h:direnv'         enable 'yes'
+zstyle ':z4h:direnv'         enable 'no'
 zstyle ':z4h:direnv:success' notify 'yes'
 zstyle ':z4h:ssh:*'                   enable 'no'
 zstyle ':z4h:ssh:*-office'      enable 'yes'
 zstyle ':z4h:ssh:*-office' send-extra-files '~/.doom.d/config.el' '~/.doom.d/init.el' '~/.doom.d/packages.el' 
 
+export XDG_CONFIG_HOME="${XDG_CONFIG_HOME:-/home/miffi/.config}"
+export XDG_CACHE_HOME="${XDG_CACHE_HOME:-/home/miffi/.cache}"
+export XDG_DATA_HOME="${XDG_DATA_HOME:-/home/miffi/.local/share}"
+export XDG_DATA_DIRS="${XDG_DATA_DIRS:-/usr/share/local:/usr/share:/var/lib/flatpak/exports/share:$HOME/.local/share/flatpak/exports/share}"
+
+export INPUTRC="${XDG_CONFIG_HOME}/readline/inputrc"
+export LESSKEY="${XDG_CONFIG_HOME}/less/lesskey"
+export STACK_ROOT="${XDG_DATA_HOME}/stack"
+export PASSWORD_STORE_DIR="${XDG_DATA_HOME}/pass"
+export RUSTUP_HOME="${XDG_DATA_HOME}/rustup"
+export TERMINFO="${XDG_DATA_HOME}/terminfo"
+export TERMINFO_DIRS="${XDG_DATA_HOME}/terminfo:/usr/share/terminfo"
+export GTK2_RC_FILES="${XDG_CONFIG_HOME}/gtk-2.0/gtkrc"
+export LESSHISTFILE="${XDG_CACHE_HOME}/less/history"
+export GNUPGHOME="${XDG_DATA_HOME}/gnupg"
+
+# set hostname var if not set
+if (( ! ${+HOSTNAME} )); then
+    export HOSTNAME="$(cat /proc/sys/kernel/hostname)"
+fi
+
+# Export environment variables.
+export GPG_TTY=$TTY
+export HISTSIZE=922337203685477580
+export KEYTIMEOUT=1
+export SAVEHIST="$HISTSIZE"
+
+# zsh
+export ZDIR="$HOME/.zsh"
+export ZSH_CACHE_DIR="$HOME/.cache/zsh"
+
+# Applications
+export ALTERNATE_EDITOR=""
+export EDITOR="emacsclient -nw"
+export BROWSER="firefox"
+export FILEMANAGER="ranger"
+export PDFREADER="zathura"
+export TERMINAL="kitty"
+# System
+export LIBVIRT_DEFAULT_URI="qemu:///system"
+# Nvim
+export VIMINIT="source $HOME/.config/nvim/init.lua"
+# Java
+export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME/java"
+export _JAVA_AWT_WM_NONREPARENTING=1
+# Unity / Mono
+export FrameworkPathOverride=/lib/mono/4.8-api
+# Application Data
+export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
+export GOPATH="$XDG_DATA_HOME"/go
+export CARGO_HOME="$XDG_DATA_HOME"/cargo
+# UI
+export XCURSOR_SIZE="32"
+export QT_QPA_PLATFORMTHEME=gtk3
+# Games
+export RMM_PATH="~/games/rimworld"
 
 AGENT_SOCK=$(gpgconf --list-dirs | grep agent-socket | cut -d : -f 2)
 
@@ -33,10 +89,7 @@ if [[ ! "$SSH_AUTH_SOCK" ]]; then
     source "$XDG_RUNTIME_DIR/ssh-agent.env" >/dev/null
 fi
 
-if [[ -z $DISPLAY && XDG_VTNR -eq 1 ]]; then
-  zstyle ':z4h:' start-tmux no
-fi
-
+zstyle ':z4h:' start-tmux no
 
 z4h install ohmyzsh/ohmyzsh || return
 z4h install agkozak/zsh-z || return
@@ -58,60 +111,8 @@ z4h load ohmyzsh/ohmyzsh/plugins/copyfile
 z4h init || return
 
 # Extend PATH.
-path=(~/.pbin ~/.bin $path)
+path=(~/.pbin ~/.bin ~/.bin/shims $path)
 
-# set hostname var if not set
-if (( ${+HOSTNAME} )); then
-    export HOSTNAME="$(cat /proc/sys/kernel/hostname)"
-fi
-
-# Export environment variables.
-export GPG_TTY=$TTY
-export HISTSIZE=922337203685477580
-export KEYTIMEOUT=1
-export SAVEHIST="$HISTSIZE"
-
-export ZDIR="$HOME/.zsh"
-export HISTFILE="$HOME/.zhistory"
-export ZSH_CACHE_DIR="$HOME/.cache/zsh"
-
-# Applications
-export EDITOR="emacs -nw"
-export BROWSER="firefox"
-export FILEMANAGER="ranger"
-export PDFREADER="zathura"
-export TERMINAL="kitty"
-
-# XDG Directories
-export XDG_CONFIG_HOME="$HOME/.config"
-export XDG_DATA_HOME="$HOME/.local/share"
-export XDG_CACHE_HOME="$HOME/.cache"
-
-# System
-export LIBVIRT_DEFAULT_URI="qemu:///system"
-
-# Nvim
-export VIMINIT="source $HOME/.config/nvim/init.vim"
-
-# Java
-export _JAVA_OPTIONS=-Djava.util.prefs.userRoot="$XDG_CONFIG_HOME"/java
-export _JAVA_AWT_WM_NONREPARENTING=1
-
-# Unity / Mono
-export FrameworkPathOverride=/lib/mono/4.8-api
-
-# Application Data
-export GRADLE_USER_HOME="$XDG_DATA_HOME"/gradle
-export GOPATH="$XDG_DATA_HOME"/go
-export CARGO_HOME="$XDG_DATA_HOME"/cargo
-export GNUPGHOME="$XDG_DATA_HOME"/gnupg
-
-# UI
-export XCURSOR_SIZE="32"
-export QT_QPA_PLATFORMTHEME=gtk3
-
-# Games
-export RMM_PATH="~/games/rimworld"
 
 # Source additional local files if they exist.
 z4h source ~/.env.zsh
@@ -132,22 +133,28 @@ z4h bindkey z4h-cd-down    Alt+Down   # cd into a child directory
 autoload -Uz zmv
 
 # Set shell options: http://zsh.sourceforge.net/Doc/Release/Options.html.
-setopt glob_dots     # no special treatment for file names with a leading dot
-setopt no_auto_menu  # require an extra TAB press to open the completion menu
 setopt autocd
 setopt auto_pushd           # Push the current directory visited on the stack.
-setopt glob_complete
-setopt hist_find_no_dups
-setopt hist_ignore_all_dups
-setopt pushd_ignore_dups    # Do not store duplicates in the stack.
-setopt pushd_silent         # Do not print the directory stack after pushd or popd.
-
 
 # Load zsh plugins
 for f ($ZDIR/load.d/**/*.zsh(N.))  . $f
 
+alias kitty_pair="bluetoothctl power on ; bluetoothctl connect 28:11:A5:DD:41:80"
+alias iwscan="iwctl station wlan0 scan ; iwctl station wlan0 get-networks"
+alias iwc="iwctl station wlan0 connect"
+alias mpv="mpv --hwdec=auto"
 
+_nh() {
+    nohup "$@" >/dev/null 2>&1 &
+}
+alias nh="_nh"
+alias yay="paru"
+alias ara="paru"
+alias dps='docker ps --format "table {{ .ID }}\t{{.Names}}\t{{.Status}}" | awk '\''NR == 1; NR > 1 {print $0 | "sort -k2"}'\'
 
-if systemctl -q is-active graphical.target && [[ ! $DISPLAY && $XDG_VTNR -eq 1 ]]; then
- exec startx &> ~/.cache/Xoutput
+if [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
+  exec startx
 fi
+
+alias swapfiles='fd "(\.sw[klmnop]|\.bak|~)$"'
+alias focus='pkill -9 Discord && pkill -9 discord && pkill -9 electron && pkill -9 signal'

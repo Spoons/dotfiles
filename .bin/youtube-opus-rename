@@ -1,0 +1,19 @@
+#!/usr/bin/env python3
+
+from pathlib import Path
+import re
+import subprocess
+import shlex
+
+file_exp = re.compile(r"(^.*) - (.*).opus", re.MULTILINE)
+for n in Path(".").iterdir():
+        groups = re.search(file_exp, str( n ))
+        try:
+                title = groups.group(2)
+                author = groups.group(1).replace('\'', '\\\'')
+                print(f"Author: {author}\nTitle: {title}")
+                cmd = f"opustags -i \"{ str(n) }\" --in-place -s \"ARTIST={author}\" -s \"TITLE={title}\""
+
+                print(subprocess.check_output(shlex.split(cmd), text=True).strip())
+        except AttributeError:
+                pass

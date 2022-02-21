@@ -1,3 +1,10 @@
+configuration {
+	modi: "drun";
+	display-drun: "apps";
+	display-run: "";
+	drun-display-format: "{name}";
+
+}
 
 * {
 	base00: #263238;
@@ -17,31 +24,23 @@
 	base0E: #C792EA;
 	base0F: #FF5370;
 
-	/*base0D: #00BCD4;*/
-
 	spacing: 0;
 	background-color: transparent;
 
-	font: "Roboto Mono 13";
-	testb: #00000070;
+	font: "Roboto Mono 25";
+	background: #2E3440a0;
 	testd: #000000f0;
 }
 
 window {
 	transparency: "real";
-	/*fullscreen: true;*/
-	/* background-color: #263238CC; /\*base00 + CC (80% opacity)*\/ */
-	background-color: @testb;
+	background-color: @background;
 }
 
 mainbox {
 	children: [inputbar, message, mode-switcher, listview];
-	spacing: 30px;
-	/*margin: 20%;*/
-	padding: 30px 0;
-	border: 1px;
-	/* border-color: @base0D; */
-	border-color: @testd;
+	spacing: 0.5em;
+	padding: 1em 0;
 }
 
 inputbar {
@@ -51,8 +50,6 @@ inputbar {
 
 prompt {
 	enabled: false;
-	/* text-color: @base0D; */
-	/* text-color: @testa; */
 }
 
 textbox-prompt-colon {
@@ -61,22 +58,16 @@ textbox-prompt-colon {
 	str: ":";
 	margin: 0 1ch 0 0;
 	text-color: @base0D;
-	/* text-color: @testd; */
 
 }
 
+/* text box top */
 entry {
 	text-color: @base07;
 }
 
 case-indicator {
 	text-color: @base0F;
-}
-
-mode-switcher, message {
-	border: 1px 0;
-	/* border-color: @base0D; */
-	border-color: @testd;
 }
 
 button, textbox {
@@ -86,25 +77,10 @@ button, textbox {
 	padding: 5px;
 }
 
-button selected {
-	background-color: @base0D;
-}
-
 listview {
 	scrollbar: true;
 	margin: 0 10px 0 30px;
 }
-
-scrollbar {
-	/* background-color: @base03; */
-	/* background-color: @testd; */
-	handle-color: @testd;
-	handle-width: 10px;
-	border: 0 1px;
-	/* border-color: @testd; */
-	margin: 0 0 0 20px;
-}
-
 element {
 	padding: 5px;
 	highlight: bold underline;
@@ -113,27 +89,15 @@ element {
 element normal {
 	background-color: transparent;
 }
-
-element selected {
-	background-color: @testd;
-}
-
-element alternate {
-	/*background-color: @base03;*/
-}
-
-element normal normal, element selected normal, element alternate normal {
-	text-color: @base07;
-}
-
-element normal urgent, element selected urgent, element alternate urgent {
-	text-color: @base0F;
-}
-
-element normal active, element selected active, element alternate active {
-	text-color: @base0B;
-}
-
 element-text {
 	text-color: @base07;
+}
+element-icon {
+	enabled: false;
+}
+element selected {
+	background-color: #ffffff;
+}
+element-text selected {
+	text-color: @background;
 }

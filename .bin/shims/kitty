@@ -1,0 +1,9 @@
+#!/bin/bash
+
+configs=( "$HOME/.config/kitty/kitty.conf" "$HOME/.config/kitty/kitty.$HOSTNAME.conf" )
+kitty_opts=()
+for n in ${configs[@]}; do
+  [ -f "$n" ] && kitty_opts+=("-c $n")
+done
+
+exec /usr/bin/kitty ${kitty_opts[@]} $@

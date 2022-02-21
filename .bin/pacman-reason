@@ -1,0 +1,24 @@
+#!/bin/bash
+deps_edited=$(mktemp)
+deps_orig=$(mktemp)
+
+
+clean() {
+  rm $deps_orig $deps_edited
+}
+
+trap clean EXIT
+
+if [ "$1" = "-e" ]; then
+  reason="--asexplicit"
+  pacman -Qqd > $deps_orig
+elif [ "$1" = "-d" ]; then
+  reason="--asdep"
+  pacman -Qqe > $deps_orig
+else
+  exit 1
+fi
+
+cp $deps_orig $deps_edited
+vim $deps_edited
+grep -F -x -v -f $deps_edited $deps_orig | tee -a ~/marked."$reason" | sudo pacman -D "$reason" -

@@ -2,16 +2,6 @@
 # Author: Michael Ciociola
 # License: GPLv3
 
-
-if [[ "$HOSTNAME" == 'iroh' ]]; then
-  bspc monitor DP-4 -d 1 2 3 4 5 
-  bspc monitor HDMI-0 -d 6 7 8 9
-fi
-
-if [ "$HOSTNAME" = 'hatsune' ]; then
-  bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9
-fi
-
 bspc config border_width            0
 bspc config window_gap              37
 
@@ -21,32 +11,43 @@ bspc config gapless_monocle         true
 bspc config presel_feedback_color   \#aaaaaa
 
 bspc config focus_follows_pointer   true
-bspc config single_monocle          true
+bspc config single_monocle          false
 
 bspc config pointer_modifier        mod4
 bspc config pointer_action1         move
 bspc config pointer_action2         none
 bspc config pointer_action3         resize_corner
 
-bspc rule -a Firefox                desktop=^1
-bspc rule -a Signal                 desktop=^4
-bspc rule -a discord                desktop=^4
+bspc rule -a Firefox                desktop=^2
+bspc rule -a Chromium               desktop=^2
+bspc rule -a Signal                 desktop=^3
+bspc rule -a discord                desktop=^3
 bspc rule -a ncmpcpp                desktop=^5
 bspc rule -a Pavucontrol            desktop=^5
 bspc rule -a QjackCtl               desktop=^5
-bspc rule -a emacs                  desktop=^2
+bspc rule -a emacs                  desktop=^4
 bspc rule -a mpv                    desktop=^7
 bspc rule -a play                   desktop=^7
 bspc rule -a kitty                  rectangle=800x600+0+0 center=true
 
-bspc rule -a Carla                  state=tiled desktop=^5
-bspc rule -a carla-bridge-win32.exe state=floating desktop=^5
-bspc rule -a carla-bridge-win64.exe state=floating desktop=^5
-bspc rule -a "Tor Browser"          state=floating desktop=^9
+bspc rule -a Carla                  state=tiled
+bspc rule -a carla-bridge-win32.exe state=floating
+bspc rule -a carla-bridge-win64.exe state=floating
+bspc rule -a "Tor Browser"          state=floating
 bspc rule -a Screenkey              manage=off
 
 xsetroot -cursor_name left_ptr
 
-bspc rule -a scratchpad sticky=on state=floating hidden=on
-# check scratchpad already running
-[ "$(ps -x | grep -c 'scratchpad')" -eq "1" ] && kitty --class=scratchpad bspwm-scratch
+bspwm-fullscreen &
+eww daemon &
+
+if [[ "$HOST" == 'iroh' ]]; then
+  # bspc monitor DP-4 -d 1 2 3 4 5 6 7
+  # bspc monitor HDMI-0 -d 8 9 10
+  bspc monitor DP-4 -d 1 2 3 4 5 6 7 8 9
+fi
+
+if [[ "$HOST" = 'hatsune' ]]; then
+  bspc monitor eDP-1 -d 1 2 3 4 5 6 7 8 9
+fi
+

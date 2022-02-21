@@ -1,0 +1,52 @@
+#!/bin/zsh
+# Written by Michael Ciociola
+
+_sudo_loop() {
+  sudo -v 
+  while true; do
+    sudo -nv; sleep 1m
+    kill -0 $$ 2>/dev/null || exit
+  done &
+}
+
+_update() {
+  git clean -fd .
+
+  if [[ "$1" == "true" ]]; then
+    git pull --ff
+  else
+    git reset --hard origin/master
+    git pull --ff --ff-only
+  fi
+}
+
+# args
+# 1. subdirectory
+# 2. text input
+# 3. root dir
+# 4. no git reset
+_build () {
+  pushd "$3/$1"
+  _update "$4"
+  echo -e "$2" | makepkg -s
+  popd
+}
+
+_update_repo() {
+  pushd /mnt/build/makepkg/pkgdest/
+  repo-add -n custom.db.tar.zst $(ls -v  *.pkg.tar.zst) 
+  popd
+}
+
+_main () {
+  local root="$HOME/build/"
+  _sudo_loop
+  _build  "tkg/linux-tkg"                  "2\n"  "$root"  "false"
+  _build  "tkg/wine-tkg-git/proton-tkg"    ""     "$root"  "false"
+  _build  "tkg/wine-tkg-git/wine-tkg-git"  ""     "$root"  "false"
+  _build  "tkg/nvidia-all"                 ""     "$root"  "false"
+  _build  "grub-hook"                      ""     "$root"  "true"
+  _update_repo
+}
+
+_main 
